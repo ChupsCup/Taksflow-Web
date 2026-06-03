@@ -89,7 +89,7 @@ export function TransactionTable({
           action={{ label: 'Tambah Transaksi', onClick: onAdd }}
         />
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-dark-border">
+        <div className="min-w-0 overflow-x-auto rounded-xl border border-dark-border">
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-dark-border bg-dark-hover text-dark-muted">
