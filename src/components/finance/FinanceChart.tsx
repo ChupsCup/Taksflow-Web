@@ -55,10 +55,10 @@ export function FinanceChart({ monthlyData, categoryData }: FinanceChartProps) {
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       {/* BarChart: Monthly Income vs Expense */}
-      <Card className="p-5">
+      <Card className="min-w-0 p-5">
         <h3 className="mb-4 text-sm font-semibold text-white">Pendapatan & Pengeluaran Bulanan</h3>
         {hasMonthlyData ? (
-          <div className="h-64 min-h-[260px] sm:h-72">
+          <div className="h-64 min-h-[260px] w-full overflow-hidden sm:h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={monthlyData} barGap={4} margin={{ top: 4, right: 4, bottom: 0, left: -16 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e1e2a" />
@@ -76,7 +76,7 @@ export function FinanceChart({ monthlyData, categoryData }: FinanceChartProps) {
                     v >= 1000000 ? `${(v / 1000000).toFixed(1)}jt` : v >= 1000 ? `${(v / 1000).toFixed(0)}rb` : String(v)
                   }
                 />
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip content={<CustomTooltip />} wrapperStyle={{ zIndex: 50 }} />
                 <Bar dataKey="income" name="Pemasukan" fill="#3ECFA8" radius={[4, 4, 0, 0]} maxBarSize={32} />
                 <Bar dataKey="expense" name="Pengeluaran" fill="#F76A8A" radius={[4, 4, 0, 0]} maxBarSize={32} />
               </BarChart>
@@ -88,10 +88,10 @@ export function FinanceChart({ monthlyData, categoryData }: FinanceChartProps) {
       </Card>
 
       {/* PieChart: Expense by Category */}
-      <Card className="p-5">
+      <Card className="min-w-0 p-5">
         <h3 className="mb-4 text-sm font-semibold text-white">Pengeluaran per Kategori</h3>
         {hasCategoryData ? (
-          <div className="h-64 min-h-[260px] sm:h-72">
+          <div className="h-64 min-h-[260px] w-full overflow-hidden sm:h-72">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -111,7 +111,7 @@ export function FinanceChart({ monthlyData, categoryData }: FinanceChartProps) {
                     />
                   ))}
                 </Pie>
-                <Tooltip content={<PieTooltip />} />
+                <Tooltip content={<PieTooltip />} wrapperStyle={{ zIndex: 50 }} />
                 <Legend
                   verticalAlign="bottom"
                   height={36}
