@@ -58,9 +58,9 @@ export function FinanceChart({ monthlyData, categoryData }: FinanceChartProps) {
       <Card className="p-5">
         <h3 className="mb-4 text-sm font-semibold text-white">Pendapatan & Pengeluaran Bulanan</h3>
         {hasMonthlyData ? (
-          <div className="h-72">
+          <div className="h-64 min-h-[260px] sm:h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={monthlyData} barGap={4} margin={{ top: 4, right: 4, bottom: 0, left: -12 }}>
+              <BarChart data={monthlyData} barGap={4} margin={{ top: 4, right: 4, bottom: 0, left: -16 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e1e2a" />
                 <XAxis
                   dataKey="month"
@@ -91,7 +91,7 @@ export function FinanceChart({ monthlyData, categoryData }: FinanceChartProps) {
       <Card className="p-5">
         <h3 className="mb-4 text-sm font-semibold text-white">Pengeluaran per Kategori</h3>
         {hasCategoryData ? (
-          <div className="h-72">
+          <div className="h-64 min-h-[260px] sm:h-72">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie

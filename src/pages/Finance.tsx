@@ -189,8 +189,9 @@ export default function Finance() {
     deleteBudget.mutate(id);
   };
 
-  // ── Loading State ──
-  if (txLoading && !transactions) {
+  const showLoading = txLoading && !transactions;
+
+  if (showLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <LoadingSpinner size={40} />
@@ -201,7 +202,7 @@ export default function Finance() {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Keuangan</h1>
           <p className="mt-1 text-sm text-dark-muted">
@@ -213,19 +214,19 @@ export default function Finance() {
       {/* Stat Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard
-          title="Total Pemasukan Bulan Ini"
+          title="Total Pemasukan"
           value={formatCurrency(totalIncome)}
           icon={TrendingUp}
           iconColor="#3ECFA8"
         />
         <StatCard
-          title="Total Pengeluaran Bulan Ini"
+          title="Total Pengeluaran"
           value={formatCurrency(totalExpense)}
           icon={TrendingDown}
           iconColor="#F76A8A"
         />
         <StatCard
-          title="Saldo Bulan Ini"
+          title="Saldo"
           value={formatCurrency(balance)}
           icon={Wallet}
           iconColor="#7C6AF7"
@@ -253,11 +254,11 @@ export default function Finance() {
 
       {/* Budget Section */}
       <div>
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-lg font-semibold text-white">Budget Bulanan</h2>
           <button
             onClick={() => setBudgetFormOpen(true)}
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
+            className="inline-flex w-fit items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
           >
             <Plus size={16} />
             Tambah Budget
@@ -267,7 +268,7 @@ export default function Finance() {
         {budgetLoading ? (
           <LoadingSpinner className="py-8" size={32} />
         ) : budgets && budgets.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {budgets.map((budget) => (
               <BudgetCard
                 key={budget.id}
