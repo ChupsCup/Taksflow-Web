@@ -13,15 +13,15 @@ interface StatCardProps {
 
 export function StatCard({ title, value, icon: Icon, trend, className, iconColor }: StatCardProps) {
   return (
-    <Card className={cn('flex items-start gap-4', className)}>
-      <div className="rounded-lg bg-dark-hover p-3" style={iconColor ? { color: iconColor } : {}}>
-        <Icon size={22} />
+    <Card className={cn('flex items-start gap-3', className)}>
+      <div className="rounded-lg bg-dark-hover p-2" style={iconColor ? { color: iconColor } : {}}>
+        <Icon size={18} />
       </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm text-dark-muted truncate">{title}</p>
-        <p className="mt-1 text-2xl font-semibold text-white">{value}</p>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-xs text-dark-muted">{title}</p>
+        <p className="mt-0.5 text-lg font-semibold text-white">{value}</p>
         {trend && (
-          <p className={cn('mt-1 text-xs', trend.positive ? 'text-secondary' : 'text-accent-pink')}>
+          <p className={cn('mt-0.5 text-xs', trend.positive ? 'text-secondary' : 'text-accent-pink')}>
             {trend.positive ? '↑' : '↓'} {trend.value}
           </p>
         )}

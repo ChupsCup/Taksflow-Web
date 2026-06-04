@@ -53,12 +53,12 @@ export function FinanceChart({ monthlyData, categoryData }: FinanceChartProps) {
   const hasCategoryData = categoryData.length > 0;
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
       {/* BarChart: Monthly Income vs Expense */}
-      <Card className="min-w-0 p-5">
-        <h3 className="mb-4 text-sm font-semibold text-white">Pendapatan & Pengeluaran Bulanan</h3>
+      <Card className="min-w-0">
+        <h3 className="mb-3 text-xs font-semibold text-white">Pendapatan & Pengeluaran Bulanan</h3>
         {hasMonthlyData ? (
-          <div className="h-64 min-h-[260px] w-full overflow-hidden sm:h-72">
+          <div className="h-48 w-full overflow-hidden sm:h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={monthlyData} barGap={4} margin={{ top: 4, right: 4, bottom: 0, left: -16 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e1e2a" />
@@ -88,10 +88,10 @@ export function FinanceChart({ monthlyData, categoryData }: FinanceChartProps) {
       </Card>
 
       {/* PieChart: Expense by Category */}
-      <Card className="min-w-0 p-5">
-        <h3 className="mb-4 text-sm font-semibold text-white">Pengeluaran per Kategori</h3>
+      <Card className="min-w-0">
+        <h3 className="mb-3 text-xs font-semibold text-white">Pengeluaran per Kategori</h3>
         {hasCategoryData ? (
-          <div className="h-64 min-h-[260px] w-full overflow-hidden sm:h-72">
+          <div className="h-48 w-full overflow-hidden sm:h-56">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie

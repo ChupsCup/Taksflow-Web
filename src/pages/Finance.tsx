@@ -200,19 +200,17 @@ export default function Finance() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Page Header */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Keuangan</h1>
-          <p className="mt-1 text-sm text-dark-muted">
-            Kelola pemasukan, pengeluaran, dan budget bulanan
-          </p>
-        </div>
+      <div>
+        <h1 className="text-xl font-bold text-white">Keuangan</h1>
+        <p className="mt-0.5 text-xs text-dark-muted">
+          Kelola pemasukan, pengeluaran, dan budget bulanan
+        </p>
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         <StatCard
           title="Total Pemasukan"
           value={formatCurrency(totalIncome)}
@@ -242,7 +240,7 @@ export default function Finance() {
       {hasTransactions ? (
         <FinanceChart monthlyData={monthlyData} categoryData={categoryData} />
       ) : (
-        <Card className="p-5">
+        <Card>
           <EmptyState
             icon={PieChartIcon}
             title="Belum ada data keuangan"
@@ -254,21 +252,21 @@ export default function Finance() {
 
       {/* Budget Section */}
       <div>
-        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-lg font-semibold text-white">Budget Bulanan</h2>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-white">Budget Bulanan</h2>
           <button
             onClick={() => setBudgetFormOpen(true)}
-            className="inline-flex w-fit items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary-dark"
           >
-            <Plus size={16} />
-            Tambah Budget
+            <Plus size={14} />
+            Tambah
           </button>
         </div>
 
         {budgetLoading ? (
-          <LoadingSpinner className="py-8" size={32} />
+          <LoadingSpinner className="py-4" size={24} />
         ) : budgets && budgets.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {budgets.map((budget) => (
               <BudgetCard
                 key={budget.id}
@@ -279,7 +277,7 @@ export default function Finance() {
             ))}
           </div>
         ) : (
-          <Card className="p-5">
+          <Card>
             <EmptyState
               icon={Wallet}
               title="Belum ada budget"

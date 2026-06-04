@@ -44,12 +44,12 @@ export function TransactionTable({
   return (
     <div>
       {/* Toolbar */}
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5">
           <select
             value={selectedMonth}
             onChange={(e) => onMonthChange(Number(e.target.value))}
-            className="rounded-lg border border-dark-border bg-dark-card px-3 py-2 text-sm text-white outline-none transition-colors focus:border-primary"
+            className="rounded-lg border border-dark-border bg-dark-card px-2.5 py-1.5 text-xs text-white outline-none transition-colors focus:border-primary"
           >
             {MONTHS.map((name, idx) => (
               <option key={idx} value={idx}>
@@ -60,7 +60,7 @@ export function TransactionTable({
           <select
             value={selectedYear}
             onChange={(e) => onYearChange(Number(e.target.value))}
-            className="rounded-lg border border-dark-border bg-dark-card px-3 py-2 text-sm text-white outline-none transition-colors focus:border-primary"
+            className="rounded-lg border border-dark-border bg-dark-card px-2.5 py-1.5 text-xs text-white outline-none transition-colors focus:border-primary"
           >
             {getYearOptions().map((year) => (
               <option key={year} value={year}>
@@ -71,10 +71,10 @@ export function TransactionTable({
         </div>
         <button
           onClick={onAdd}
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
+          className="inline-flex items-center gap-1 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary-dark"
         >
-          <Plus size={16} />
-          Tambah Transaksi
+          <Plus size={14} />
+          Tambah
         </button>
       </div>
 
@@ -93,11 +93,11 @@ export function TransactionTable({
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-dark-border bg-dark-hover text-dark-muted">
-                <th className="px-4 py-3 font-medium">Tanggal</th>
-                <th className="px-4 py-3 font-medium">Deskripsi</th>
-                <th className="px-4 py-3 font-medium">Kategori</th>
-                <th className="px-4 py-3 text-right font-medium">Jumlah</th>
-                <th className="px-4 py-3 text-center font-medium">Aksi</th>
+                <th className="px-3 py-2 text-xs font-medium">Tanggal</th>
+                <th className="px-3 py-2 text-xs font-medium">Deskripsi</th>
+                <th className="px-3 py-2 text-xs font-medium">Kategori</th>
+                <th className="px-3 py-2 text-right text-xs font-medium">Jumlah</th>
+                <th className="px-3 py-2 text-center text-xs font-medium">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -106,37 +106,32 @@ export function TransactionTable({
                   key={tx.id}
                   className="border-b border-dark-border transition-colors last:border-none hover:bg-dark-hover"
                 >
-                  <td className="whitespace-nowrap px-4 py-3 text-white">
+                  <td className="whitespace-nowrap px-3 py-2 text-xs text-white">
                     {formatDate(tx.date)}
                   </td>
-                  <td className="px-4 py-3 text-white">{tx.description}</td>
-                  <td className="px-4 py-3">
-                    <Badge
-                      variant={
-                        tx.type === 'income' ? 'secondary' : 'pink'
-                      }
-                      className="text-xs"
-                    >
+                  <td className="px-3 py-2 text-xs text-white">{tx.description}</td>
+                  <td className="px-3 py-2">
+                    <Badge variant={tx.type === 'income' ? 'secondary' : 'pink'} className="text-[10px]">
                       {tx.category}
                     </Badge>
                   </td>
                   <td
                     className={cn(
-                      'whitespace-nowrap px-4 py-3 text-right font-medium',
+                      'whitespace-nowrap px-3 py-2 text-right text-xs font-medium',
                       tx.type === 'income' ? 'text-secondary' : 'text-accent-pink'
                     )}
                   >
                     {tx.type === 'income' ? '+' : '-'}
                     {formatCurrency(tx.amount)}
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center justify-center gap-1">
+                  <td className="px-3 py-2">
+                    <div className="flex items-center justify-center gap-0.5">
                       <button
                         onClick={() => onEdit(tx)}
-                        className="rounded-lg p-1.5 text-dark-muted transition-colors hover:bg-dark-border hover:text-white"
+                        className="rounded-md p-1 text-dark-muted transition-colors hover:bg-dark-border hover:text-white"
                         title="Edit"
                       >
-                        <Pencil size={15} />
+                        <Pencil size={13} />
                       </button>
                       <button
                         onClick={() => {
@@ -144,10 +139,10 @@ export function TransactionTable({
                             onDelete(tx.id);
                           }
                         }}
-                        className="rounded-lg p-1.5 text-dark-muted transition-colors hover:bg-dark-border hover:text-accent-pink"
+                        className="rounded-md p-1 text-dark-muted transition-colors hover:bg-dark-border hover:text-accent-pink"
                         title="Hapus"
                       >
-                        <Trash2 size={15} />
+                        <Trash2 size={13} />
                       </button>
                     </div>
                   </td>
