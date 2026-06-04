@@ -4,12 +4,13 @@ import {
   Plus,
   ArrowUpDown,
   CheckSquare,
+  X,
 } from 'lucide-react';
 import { EmptyState } from '../ui/EmptyState';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 import { TodoItem } from './TodoItem';
-import { cn } from '../../lib/utils';
-import { TODO_CATEGORIES, type Todo, type TodoStatus } from '../../types';
+import { cn, getTodoCategories, saveTodoCategories } from '../../lib/utils';
+import { type Todo, type TodoStatus } from '../../types';
 
 type FilterTab = 'all' | TodoStatus;
 type SortBy = 'newest' | 'oldest' | 'due_date' | 'priority';
@@ -30,10 +31,10 @@ const priorityWeight: Record<string, number> = {
 };
 
 const filterTabs: { key: FilterTab; label: string }[] = [
-  { key: 'all', label: 'All' },
-  { key: 'pending', label: 'Pending' },
-  { key: 'in_progress', label: 'In Progress' },
-  { key: 'done', label: 'Done' },
+  { key: 'all', label: 'Semua' },
+  { key: 'pending', label: 'Menunggu' },
+  { key: 'in_progress', label: 'Diproses' },
+  { key: 'done', label: 'Selesai' },
 ];
 
 export function TodoList({
@@ -49,6 +50,9 @@ export function TodoList({
   const [categoryFilter, setCategoryFilter] = useState('');
   const [sortBy, setSortBy] = useState<SortBy>('newest');
   const [quickAddTitle, setQuickAddTitle] = useState('');
+  const [categories, setCategories] = useState<string[]>(() => getTodoCategories());
+  const [manageOpen, setManageOpen] = useState(false);
+  const [newCategory, setNewCategory] = useState('');
 
   const handleQuickAdd = (e: FormEvent) => {
     e.preventDefault();
@@ -104,7 +108,7 @@ export function TodoList({
             type="text"
             value={quickAddTitle}
             onChange={(e) => setQuickAddTitle(e.target.value)}
-            placeholder="Quick add a todo... (press Enter)"
+            placeholder="Tambah cepat... (Enter)"
             className="w-full rounded-lg border border-dark-border bg-dark-card py-2.5 pl-10 pr-4 text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
           />
         </div>
@@ -117,7 +121,7 @@ export function TodoList({
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search todos by title..."
+          placeholder="Cari tugas berdasarkan judul..."
           className="w-full rounded-lg border border-dark-border bg-dark-card py-2.5 pl-10 pr-4 text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
         />
       </div>
@@ -142,19 +146,90 @@ export function TodoList({
           ))}
         </div>
 
-        {/* Category filter */}
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          className="rounded-lg border border-dark-border bg-dark-card px-3 py-1.5 text-xs font-medium text-dark-muted outline-none transition-colors focus:border-primary"
-        >
-          <option value="">All Categories</option>
-          {TODO_CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
+        {/* Category filter + manage */}
+        <div className="relative flex items-center gap-1">
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="rounded-lg border border-dark-border bg-dark-card px-3 py-1.5 text-xs font-medium text-dark-muted outline-none transition-colors focus:border-primary"
+          >
+            <option value="">Semua Kategori</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onClick={() => {
+              setManageOpen(!manageOpen);
+              setNewCategory('');
+            }}
+            className="flex items-center gap-1 rounded-lg border border-dark-border px-2 py-1.5 text-xs text-dark-muted transition-colors hover:bg-dark-hover hover:text-white"
+            title="Tambah atau hapus kategori"
+          >
+            <Plus size={12} />
+            Kategori
+          </button>
+
+          {manageOpen && (
+            <div className="absolute left-0 top-full z-30 mt-1 w-56 rounded-lg border border-dark-border bg-dark-card p-3 shadow-xl">
+              <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-dark-muted">
+                Kelola Kategori
+              </p>
+              <div className="mb-2 max-h-32 space-y-1 overflow-y-auto">
+                {categories.map((cat) => (
+                  <div
+                    key={cat}
+                    className="flex items-center justify-between rounded-md px-2 py-1 text-xs text-white hover:bg-dark-hover"
+                  >
+                    <span>{cat}</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updated = categories.filter((c) => c !== cat);
+                        setCategories(updated);
+                        saveTodoCategories(updated);
+                        if (categoryFilter === cat) setCategoryFilter('');
+                      }}
+                      className="rounded p-0.5 text-dark-muted transition-colors hover:text-accent-pink"
+                      title="Hapus"
+                    >
+                      <X size={12} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const trimmed = newCategory.trim();
+                  if (!trimmed || categories.includes(trimmed)) return;
+                  const updated = [...categories, trimmed];
+                  setCategories(updated);
+                  saveTodoCategories(updated);
+                  setNewCategory('');
+                }}
+                className="flex gap-1"
+              >
+                <input
+                  type="text"
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  placeholder="Tambah kategori"
+                  className="min-w-0 flex-1 rounded-md border border-dark-border bg-dark-bg px-2 py-1 text-xs text-white placeholder-dark-muted outline-none focus:border-primary"
+                />
+                <button
+                  type="submit"
+                  className="shrink-0 rounded-md bg-primary px-2 py-1 text-[10px] font-medium text-white"
+                >
+                  Tambah
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
 
         {/* Sort */}
         <div className="flex items-center gap-1.5 ml-auto">
@@ -164,10 +239,10 @@ export function TodoList({
             onChange={(e) => setSortBy(e.target.value as SortBy)}
             className="rounded-lg border border-dark-border bg-dark-card px-3 py-1.5 text-xs font-medium text-dark-muted outline-none transition-colors focus:border-primary"
           >
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-            <option value="due_date">Due Date</option>
-            <option value="priority">Priority</option>
+            <option value="newest">Terbaru</option>
+            <option value="oldest">Terlama</option>
+            <option value="due_date">Tenggat</option>
+            <option value="priority">Prioritas</option>
           </select>
         </div>
       </div>
@@ -178,11 +253,11 @@ export function TodoList({
       ) : sorted.length === 0 ? (
         <EmptyState
           icon={CheckSquare}
-          title={search || activeTab !== 'all' || categoryFilter ? 'No matching todos' : 'No todos yet'}
+          title={search || activeTab !== 'all' || categoryFilter ? 'Tidak ada tugas yang cocok' : 'Belum ada tugas'}
           description={
             search || activeTab !== 'all' || categoryFilter
-              ? 'Try adjusting your filters or search query.'
-              : 'Add your first todo using the form above or click the button below.'
+              ? 'Coba atur ulang filter atau pencarian.'
+              : 'Tambahkan tugas pertama menggunakan form di atas atau klik tombol di bawah.'
           }
         />
       ) : (

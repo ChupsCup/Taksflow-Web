@@ -32,26 +32,30 @@ export function JobsStats() {
   const offerRate = stats.total > 0 ? Math.round((stats.offer / stats.total) * 100) : 0;
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <StatCard
+        className="p-3"
         title="Total Dilamar"
         value={stats.total}
         icon={Briefcase}
         iconColor="#7C6AF7"
       />
       <StatCard
+        className="p-3"
         title="Response Rate"
         value={`${stats.responseRate}%`}
         icon={Activity}
         iconColor="#3ECFA8"
       />
       <StatCard
+        className="p-3"
         title="Interview Rate"
         value={`${stats.interviewRate}%`}
         icon={Calendar}
         iconColor="#F7A26A"
       />
       <StatCard
+        className="p-3"
         title="Offer Rate"
         value={`${offerRate}%`}
         icon={BarChart3}

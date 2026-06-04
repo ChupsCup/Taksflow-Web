@@ -27,33 +27,24 @@ export default function Jobs() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
-            <Briefcase size={22} />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-white">Lamaran Kerja</h1>
-            <p className="text-sm text-dark-muted">Kelola dan pantau progres lamaran kerjamu</p>
-          </div>
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+          <Briefcase size={22} />
         </div>
-        <button
-          onClick={handleAdd}
-          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
-        >
-          <Plus size={18} />
-          Tambah Lamaran
-        </button>
+        <div>
+          <h1 className="text-xl font-bold text-white">Lamaran Kerja</h1>
+          <p className="text-sm text-dark-muted">Kelola dan pantau progres lamaran kerjamu</p>
+        </div>
       </div>
 
       {/* Stats */}
       <JobsStats />
 
       {/* Status Pipeline */}
-      <Card className="p-5">
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-dark-muted">
+      <Card className="p-3">
+        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dark-muted">
           Pipeline Status
         </h2>
         <StatusTimeline />
@@ -61,9 +52,18 @@ export default function Jobs() {
 
       {/* Table */}
       <div>
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-dark-muted">
-          Daftar Lamaran
-        </h2>
+        <div className="mb-2 flex items-center justify-between">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-dark-muted">
+            Daftar Lamaran
+          </h2>
+          <button
+            onClick={handleAdd}
+            className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary-dark"
+          >
+            <Plus size={14} />
+            Tambah Lamaran
+          </button>
+        </div>
         <ApplicationTable onEdit={handleEdit} />
       </div>
 

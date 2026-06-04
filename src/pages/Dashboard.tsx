@@ -101,14 +101,14 @@ export default function Dashboard() {
             <div className="rounded-lg bg-secondary/10 p-2 text-secondary">
               <CheckSquare size={20} />
             </div>
-            <h2 className="font-semibold text-white">Todo List</h2>
+            <h2 className="font-semibold text-white">Daftar Tugas</h2>
           </div>
           {todoStats ? (
             <>
               {/* Progress bar */}
               <div className="mb-4">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-dark-muted">Progress</span>
+                  <span className="text-dark-muted">Progres</span>
                   <span className="font-medium text-white">{todoStats.completionRate}%</span>
                 </div>
                 <div className="mt-1 h-2 overflow-hidden rounded-full bg-dark-hover">
@@ -129,7 +129,7 @@ export default function Dashboard() {
                 </div>
                 <div className="rounded-lg bg-dark-hover p-3 text-center">
                   <p className="text-2xl font-bold text-accent-orange">{todoStats.pending}</p>
-                  <p className="text-xs text-dark-muted">Pending</p>
+                  <p className="text-xs text-dark-muted">Menunggu</p>
                 </div>
               </div>
               {todoStats.overdue > 0 && (

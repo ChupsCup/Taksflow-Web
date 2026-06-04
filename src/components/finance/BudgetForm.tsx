@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { TRANSACTION_CATEGORIES } from '../../types';
+import { CategorySelect } from '../ui/CategorySelect';
 
 interface BudgetFormProps {
   isOpen: boolean;
@@ -10,12 +11,19 @@ interface BudgetFormProps {
 }
 
 const expenseCategories = TRANSACTION_CATEGORIES.filter(
-  (c) => !['Gaji', 'Freelance', 'Investasi', 'Tabungan'].includes(c)
+  (c) => !['Gaji', 'Freelance', 'Investasi', 'Tabungan', 'Lainnya'].includes(c)
 );
+
+function formatWithDots(value: string): string {
+  const digits = value.replace(/\D/g, '');
+  if (!digits) return '';
+  return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
 
 export function BudgetForm({ isOpen, onClose, onSubmit, existingCategory }: BudgetFormProps) {
   const [category, setCategory] = useState('');
-  const [amount, setAmount] = useState('');
+  const [amountDisplay, setAmountDisplay] = useState('');
+  const [amountRaw, setAmountRaw] = useState('');
   const [period, setPeriod] = useState<'monthly' | 'yearly'>('monthly');
 
   useEffect(() => {
@@ -24,7 +32,8 @@ export function BudgetForm({ isOpen, onClose, onSubmit, existingCategory }: Budg
     } else {
       setCategory('');
     }
-    setAmount('');
+    setAmountRaw('');
+    setAmountDisplay('');
     setPeriod('monthly');
   }, [existingCategory, isOpen]);
 
@@ -32,9 +41,10 @@ export function BudgetForm({ isOpen, onClose, onSubmit, existingCategory }: Budg
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!amountRaw) return;
     onSubmit({
       category,
-      amount: Number(amount),
+      amount: Number(amountRaw),
       period,
     });
   };
@@ -64,30 +74,28 @@ export function BudgetForm({ isOpen, onClose, onSubmit, existingCategory }: Budg
           {/* Category */}
           <div>
             <label className="mb-1.5 block text-sm text-dark-muted">Kategori</label>
-            <select
+            <CategorySelect
+              categories={expenseCategories}
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(val) => setCategory(val)}
               required
-              className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 text-sm text-white outline-none transition-colors focus:border-primary"
-            >
-              <option value="">Pilih kategori</option>
-              {expenseCategories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
+              storageKey="transaction-expense"
+            />
           </div>
 
           {/* Amount */}
           <div>
             <label className="mb-1.5 block text-sm text-dark-muted">Batas Budget (Rp)</label>
             <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              type="text"
+              inputMode="numeric"
+              value={amountDisplay}
+              onChange={(e) => {
+                const raw = e.target.value.replace(/\./g, '').replace(/\D/g, '');
+                setAmountRaw(raw);
+                setAmountDisplay(formatWithDots(raw));
+              }}
               placeholder="0"
-              min="0"
               required
               className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 text-sm text-white outline-none transition-colors focus:border-primary"
             />

@@ -36,31 +36,31 @@ export function TodoStats() {
       iconColor: '#6b6b80',
     },
     {
-      title: 'Done',
+      title: 'Selesai',
       value: stats.done,
       icon: CheckCircle2,
       iconColor: '#3ECFA8',
     },
     {
-      title: 'In Progress',
+      title: 'Diproses',
       value: stats.inProgress,
       icon: Clock,
       iconColor: '#F7A26A',
     },
     {
-      title: 'Pending',
+      title: 'Menunggu',
       value: stats.pending,
       icon: Circle,
       iconColor: '#6b6b80',
     },
     {
-      title: 'Overdue',
+      title: 'Terlambat',
       value: stats.overdue,
       icon: AlertCircle,
       iconColor: stats.overdue > 0 ? '#F76A8A' : '#6b6b80',
     },
     {
-      title: 'Completion',
+      title: 'Progres',
       value: `${stats.completionRate}%`,
       icon: Percent,
       iconColor: stats.completionRate >= 50 ? '#3ECFA8' : '#F7A26A',
@@ -72,7 +72,7 @@ export function TodoStats() {
       {/* Progress Bar */}
       <Card className="overflow-hidden">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-dark-muted">Overall Progress</span>
+          <span className="text-sm font-medium text-dark-muted">Progres Keseluruhan</span>
           <span className="text-sm font-semibold text-white">{stats.completionRate}%</span>
         </div>
         <div className="h-2.5 w-full rounded-full bg-dark-border">
@@ -92,10 +92,10 @@ export function TodoStats() {
         </div>
         <div className="mt-1 flex justify-between text-xs text-dark-muted">
           <span>
-            {stats.done}/{stats.total} completed
+            {stats.done}/{stats.total} selesai
           </span>
           {stats.total > 0 && (
-            <span>{stats.total - stats.done} remaining</span>
+            <span>Sisa {stats.total - stats.done}</span>
           )}
         </div>
       </Card>

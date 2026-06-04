@@ -19,9 +19,9 @@ const statusCycle: Record<TodoStatus, TodoStatus> = {
 };
 
 const priorityConfig: Record<string, { label: string; dotClass: string }> = {
-  low: { label: 'Low', dotClass: 'bg-gray-500' },
-  medium: { label: 'Medium', dotClass: 'bg-accent-orange' },
-  high: { label: 'High', dotClass: 'bg-red-500' },
+  low: { label: 'Rendah', dotClass: 'bg-gray-500' },
+  medium: { label: 'Sedang', dotClass: 'bg-accent-orange' },
+  high: { label: 'Tinggi', dotClass: 'bg-red-500' },
 };
 
 const statusIcons: Record<TodoStatus, typeof Circle> = {
@@ -83,7 +83,13 @@ export function TodoItem({ todo, onStatusToggle, onEdit, onDelete }: TodoItemPro
           statusColors[todo.status],
           todo.status === 'done' ? 'scale-110' : 'hover:scale-110'
         )}
-        title={`Mark as ${statusCycle[todo.status]}`}
+        title={
+          statusCycle[todo.status] === 'in_progress'
+            ? 'Tandai Diproses'
+            : statusCycle[todo.status] === 'done'
+              ? 'Tandai Selesai'
+              : 'Tandai Menunggu'
+        }
       >
         <StatusIcon size={22} />
       </button>
@@ -134,17 +140,17 @@ export function TodoItem({ todo, onStatusToggle, onEdit, onDelete }: TodoItemPro
             {overdue ? (
               <span className="flex items-center gap-1 text-xs font-medium text-red-400">
                 <AlertCircle size={13} />
-                Overdue by {Math.abs(days)} day{Math.abs(days) !== 1 ? 's' : ''}
+                Terlambat {Math.abs(days)} hari
               </span>
             ) : days === 0 ? (
-              <span className="text-xs font-medium text-accent-orange">Due today</span>
+              <span className="text-xs font-medium text-accent-orange">Jatuh tempo hari ini</span>
             ) : days > 0 && days <= 3 ? (
               <span className="text-xs font-medium text-accent-orange">
-                {days} day{days !== 1 ? 's' : ''} left
+                Sisa {days} hari
               </span>
             ) : days > 0 ? (
               <span className="text-xs text-dark-muted">
-                {days} day{days !== 1 ? 's' : ''} left
+                Sisa {days} hari
               </span>
             ) : (
               <span className="text-xs text-dark-muted">{formatDate(todo.due_date)}</span>
@@ -172,7 +178,7 @@ export function TodoItem({ todo, onStatusToggle, onEdit, onDelete }: TodoItemPro
         <button
           onClick={handleDelete}
           className="rounded-lg p-1.5 text-dark-muted transition-colors hover:bg-red-500/15 hover:text-red-400"
-          title="Delete"
+          title="Hapus"
         >
           <Trash2 size={16} />
         </button>

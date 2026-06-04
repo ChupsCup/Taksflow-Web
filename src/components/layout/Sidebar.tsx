@@ -8,11 +8,11 @@ const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/finance', icon: Wallet, label: 'Keuangan' },
   { to: '/jobs', icon: Briefcase, label: 'Lamaran' },
-  { to: '/todos', icon: CheckSquare, label: 'Todo List' },
+  { to: '/todos', icon: CheckSquare, label: 'Daftar Tugas' },
 ];
 
 export function Sidebar() {
-  const { profile, signOut } = useAuth();
+  const { signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -74,29 +74,8 @@ export function Sidebar() {
           ))}
         </nav>
 
-        {/* User + Logout */}
+        {/* Logout */}
         <div className="border-t border-dark-border px-4 py-4">
-          <div className="mb-3 flex items-center gap-3">
-            {profile?.avatar_url ? (
-              <img
-                src={profile.avatar_url}
-                alt=""
-                className="h-8 w-8 rounded-full object-cover"
-              />
-            ) : (
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20 text-sm text-primary">
-                {profile?.full_name?.charAt(0) || 'U'}
-              </div>
-            )}
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-white">
-                {profile?.full_name || 'User'}
-              </p>
-              <p className="truncate text-xs text-dark-muted">
-                {profile?.email || ''}
-              </p>
-            </div>
-          </div>
           <button
             onClick={signOut}
             className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-dark-muted transition-colors hover:bg-dark-hover hover:text-accent-pink"

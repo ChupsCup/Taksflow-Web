@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { TRANSACTION_CATEGORIES, type Transaction } from '../../types';
 import { cn } from '../../lib/utils';
+import { CategorySelect } from '../ui/CategorySelect';
 
 interface TransactionFormProps {
   isOpen: boolean;
@@ -10,10 +11,29 @@ interface TransactionFormProps {
   transaction?: Transaction | null;
 }
 
+function formatWithDots(value: string): string {
+  const digits = value.replace(/\D/g, '');
+  if (!digits) return '';
+  return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function parseDotted(value: string): string {
+  return value.replace(/\./g, '');
+}
+
+// 'Lainnya' di-exclude karena ada opsi custom "+ Lainnya..." di dropdown
+const BASE_INCOME = ['Gaji', 'Freelance', 'Investasi', 'Tabungan'];
+const BASE_EXPENSE = TRANSACTION_CATEGORIES.filter(
+  (c) => !BASE_INCOME.includes(c) && c !== 'Lainnya'
+);
+const INCOME_CATEGORIES = BASE_INCOME.filter((c) => c !== 'Lainnya');
+const EXPENSE_CATEGORIES = BASE_EXPENSE;
+
 export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: TransactionFormProps) {
   const [type, setType] = useState<'income' | 'expense'>('expense');
   const [category, setCategory] = useState('');
-  const [amount, setAmount] = useState('');
+  const [amountDisplay, setAmountDisplay] = useState('');
+  const [amountRaw, setAmountRaw] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
 
@@ -21,13 +41,16 @@ export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: Tran
     if (transaction) {
       setType(transaction.type);
       setCategory(transaction.category);
-      setAmount(String(transaction.amount));
+      const raw = String(transaction.amount);
+      setAmountRaw(raw);
+      setAmountDisplay(formatWithDots(raw));
       setDescription(transaction.description);
       setDate(transaction.date.split('T')[0]);
     } else {
       setType('expense');
       setCategory('');
-      setAmount('');
+      setAmountRaw('');
+      setAmountDisplay('');
       setDescription('');
       setDate(new Date().toISOString().split('T')[0]);
     }
@@ -35,24 +58,31 @@ export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: Tran
 
   if (!isOpen) return null;
 
+  const selectCategories =
+    type === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!category || !amountRaw) return;
     onSubmit({
       type,
       category,
-      amount: Number(amount),
+      amount: Number(amountRaw),
       description,
       date: new Date(date).toISOString(),
     });
   };
 
-  const incomeCategories = TRANSACTION_CATEGORIES.filter((c) =>
-    ['Gaji', 'Freelance', 'Investasi', 'Tabungan', 'Lainnya'].includes(c)
-  );
-  const expenseCategories = TRANSACTION_CATEGORIES.filter(
-    (c) => !['Gaji', 'Freelance', 'Investasi', 'Tabungan'].includes(c)
-  );
-  const filteredCategories = type === 'income' ? incomeCategories : expenseCategories;
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = parseDotted(e.target.value).replace(/\D/g, '');
+    setAmountRaw(raw);
+    setAmountDisplay(formatWithDots(raw));
+  };
+
+  const switchType = (newType: 'income' | 'expense') => {
+    setType(newType);
+    setCategory('');
+  };
 
   return (
     <div
@@ -60,29 +90,29 @@ export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: Tran
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-xl border border-dark-border bg-dark-card p-6 shadow-xl"
+        className="w-full max-w-md rounded-xl border border-dark-border bg-dark-card p-5 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-white">
+          <h2 className="text-base font-semibold text-white">
             {transaction ? 'Edit Transaksi' : 'Tambah Transaksi'}
           </h2>
           <button
             onClick={onClose}
             className="rounded-lg p-1 text-dark-muted transition-colors hover:text-white"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3">
           {/* Type Toggle */}
           <div className="flex gap-2 rounded-lg bg-dark-bg p-1">
             <button
               type="button"
-              onClick={() => setType('expense')}
+              onClick={() => switchType('expense')}
               className={cn(
-                'flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                'flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
                 type === 'expense'
                   ? 'bg-accent-pink text-white'
                   : 'text-dark-muted hover:text-white'
@@ -92,9 +122,9 @@ export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: Tran
             </button>
             <button
               type="button"
-              onClick={() => setType('income')}
+              onClick={() => switchType('income')}
               className={cn(
-                'flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                'flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
                 type === 'income'
                   ? 'bg-secondary text-white'
                   : 'text-dark-muted hover:text-white'
@@ -106,31 +136,26 @@ export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: Tran
 
           {/* Category */}
           <div>
-            <label className="mb-1.5 block text-sm text-dark-muted">Kategori</label>
-            <select
+            <label className="mb-1.5 block text-xs text-dark-muted">Kategori</label>
+            <CategorySelect
+              key={type}
+              categories={selectCategories}
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(val) => setCategory(val)}
               required
-              className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 text-sm text-white outline-none transition-colors focus:border-primary"
-            >
-              <option value="">Pilih kategori</option>
-              {filteredCategories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
+              storageKey={`transaction-${type}`}
+            />
           </div>
 
           {/* Amount */}
           <div>
-            <label className="mb-1.5 block text-sm text-dark-muted">Jumlah (Rp)</label>
+            <label className="mb-1.5 block text-xs text-dark-muted">Jumlah (Rp)</label>
             <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              type="text"
+              inputMode="numeric"
+              value={amountDisplay}
+              onChange={handleAmountChange}
               placeholder="0"
-              min="0"
               required
               className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 text-sm text-white outline-none transition-colors focus:border-primary"
             />
@@ -138,20 +163,21 @@ export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: Tran
 
           {/* Description */}
           <div>
-            <label className="mb-1.5 block text-sm text-dark-muted">Deskripsi</label>
+            <label className="mb-1.5 block text-xs text-dark-muted">
+              Deskripsi <span className="text-dark-muted/50">(opsional)</span>
+            </label>
             <input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Deskripsi transaksi"
-              required
               className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 text-sm text-white outline-none transition-colors focus:border-primary"
             />
           </div>
 
           {/* Date */}
           <div>
-            <label className="mb-1.5 block text-sm text-dark-muted">Tanggal</label>
+            <label className="mb-1.5 block text-xs text-dark-muted">Tanggal</label>
             <input
               type="date"
               value={date}

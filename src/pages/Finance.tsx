@@ -15,7 +15,7 @@ import {
 import { useBudgets, useUpsertBudget, useDeleteBudget } from '../hooks/useBudgets';
 import { getMonthRange, formatCurrency } from '../lib/utils';
 import { CATEGORY_COLORS } from '../types';
-import type { Transaction, MonthlySummary, CategoryTotals } from '../types';
+import type { Transaction, CategoryTotals } from '../types';
 import { StatCard } from '../components/ui/StatCard';
 import { Card } from '../components/ui/Card';
 import { EmptyState } from '../components/ui/EmptyState';
@@ -27,11 +27,12 @@ import { BudgetCard } from '../components/finance/BudgetCard';
 import { BudgetForm } from '../components/finance/BudgetForm';
 
 export default function Finance() {
-  const today = new Date();
+  // Stable date references (memoized so query keys don't change every render)
+  const todayRef = useMemo(() => new Date(), []);
 
   // ── Month Filter ──
-  const [filterMonth, setFilterMonth] = useState(today.getMonth());
-  const [filterYear, setFilterYear] = useState(today.getFullYear());
+  const [filterMonth, setFilterMonth] = useState(todayRef.getMonth());
+  const [filterYear, setFilterYear] = useState(todayRef.getFullYear());
 
   // ── Modal State ──
   const [txFormOpen, setTxFormOpen] = useState(false);
@@ -42,17 +43,12 @@ export default function Finance() {
   const filterDate = new Date(filterYear, filterMonth, 1);
   const monthRange = getMonthRange(filterDate);
 
-  const last12Months = new Date(today.getFullYear() - 1, today.getMonth(), 1);
-
   // ── Queries ──
   const { data: transactions, isLoading: txLoading } = useTransactions(
     monthRange.start,
     monthRange.end
   );
-  const { data: allTransactions } = useTransactions(
-    last12Months.toISOString(),
-    today.toISOString()
-  );
+  const { data: allTransactions } = useTransactions();
   const { data: budgets, isLoading: budgetLoading } = useBudgets();
 
   // ── Mutations ──
@@ -81,59 +77,66 @@ export default function Finance() {
     [transactions]
   );
 
-  const balance = totalIncome - totalExpense;
+  const runningIncome = useMemo(
+    () =>
+      allTransactions?.reduce(
+        (sum, tx) => (tx.type === 'income' ? sum + tx.amount : sum),
+        0
+      ) ?? 0,
+    [allTransactions]
+  );
+  const runningExpense = useMemo(
+    () =>
+      allTransactions?.reduce(
+        (sum, tx) => (tx.type === 'expense' ? sum + tx.amount : sum),
+        0
+      ) ?? 0,
+    [allTransactions]
+  );
+  const balance = runningIncome - runningExpense;
 
   const hasTransactions = transactions && transactions.length > 0;
 
-  // ── BarChart: Monthly Data ──
-  const monthlyData: MonthlySummary[] = useMemo(() => {
-    if (!allTransactions) return [];
-    const grouped: Record<string, { income: number; expense: number }> = {};
-
-    for (const tx of allTransactions) {
-      const d = new Date(tx.date);
-      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-      if (!grouped[key]) grouped[key] = { income: 0, expense: 0 };
-      if (tx.type === 'income') grouped[key].income += tx.amount;
-      else grouped[key].expense += tx.amount;
-    }
-
-    const monthNames = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
-      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des',
-    ];
-
-    return Object.entries(grouped)
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([key, data]) => {
-        const m = parseInt(key.split('-')[1], 10);
-        return {
-          month: monthNames[m - 1] || key,
-          income: data.income,
-          expense: data.expense,
-        };
-      });
-  }, [allTransactions]);
-
-  // ── PieChart: Expense by Category ──
-  const categoryData: CategoryTotals[] = useMemo(() => {
+  // ── PieCharts: Income & Expense by Category ──
+  const incomeData: CategoryTotals[] = useMemo(() => {
     if (!transactions) return [];
-    const expenseByCategory: Record<string, number> = {};
-    let expenseTotal = 0;
+    const byCategory: Record<string, number> = {};
+    let total = 0;
 
     for (const tx of transactions) {
-      if (tx.type === 'expense') {
-        expenseByCategory[tx.category] =
-          (expenseByCategory[tx.category] || 0) + tx.amount;
-        expenseTotal += tx.amount;
+      if (tx.type === 'income') {
+        byCategory[tx.category] = (byCategory[tx.category] || 0) + tx.amount;
+        total += tx.amount;
       }
     }
 
-    return Object.entries(expenseByCategory)
-      .map(([category, total]) => ({
+    return Object.entries(byCategory)
+      .map(([category, amount]) => ({
         category,
-        total,
-        percentage: expenseTotal > 0 ? Math.round((total / expenseTotal) * 100) : 0,
+        total: amount,
+        percentage: total > 0 ? Math.round((amount / total) * 100) : 0,
+        color: CATEGORY_COLORS[category] || '#6b6b80',
+      }))
+      .sort((a, b) => b.total - a.total);
+  }, [transactions]);
+
+  const expenseData: CategoryTotals[] = useMemo(() => {
+    if (!transactions) return [];
+    const byCategory: Record<string, number> = {};
+    let total = 0;
+
+    for (const tx of transactions) {
+      if (tx.type === 'expense') {
+        byCategory[tx.category] = (byCategory[tx.category] || 0) + tx.amount;
+        total += tx.amount;
+      }
+    }
+
+    return Object.entries(byCategory)
+      .map(([category, amount]) => ({
+        category,
+        total: amount,
+        percentage: total > 0 ? Math.round((amount / total) * 100) : 0,
         color: CATEGORY_COLORS[category] || '#6b6b80',
       }))
       .sort((a, b) => b.total - a.total);
@@ -236,75 +239,78 @@ export default function Finance() {
         />
       </div>
 
+      {/* Budget + Transaction: side by side */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {/* Budget Section - Left */}
+        <div className="min-w-0">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-white">Budget Bulanan</h2>
+            <button
+              onClick={() => setBudgetFormOpen(true)}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary-dark"
+            >
+              <Plus size={14} />
+              Tambah
+            </button>
+          </div>
+
+          {budgetLoading ? (
+            <LoadingSpinner className="py-4" size={24} />
+          ) : budgets && budgets.length > 0 ? (
+            <div className="grid grid-cols-1 gap-3">
+              {budgets.map((budget) => (
+                <BudgetCard
+                  key={budget.id}
+                  budget={budget}
+                  spent={categorySpending[budget.category] || 0}
+                  onDelete={handleDeleteBudget}
+                />
+              ))}
+            </div>
+          ) : (
+            <Card>
+              <EmptyState
+                icon={Wallet}
+                title="Belum ada budget"
+                description="Atur batas pengeluaran per kategori untuk membantu mengelola keuangan."
+                action={{
+                  label: 'Tambah Budget',
+                  onClick: () => setBudgetFormOpen(true),
+                }}
+              />
+            </Card>
+          )}
+        </div>
+
+        {/* Transaction Section - Right */}
+        <div className="min-w-0">
+          <TransactionTable
+            transactions={transactions}
+            isLoading={txLoading}
+            selectedMonth={filterMonth}
+            selectedYear={filterYear}
+            onMonthChange={setFilterMonth}
+            onYearChange={setFilterYear}
+            onAdd={openAddTx}
+            onEdit={handleEditTx}
+            onDelete={handleDeleteTx}
+          />
+        </div>
+      </div>
+
       {/* Charts Section */}
       {hasTransactions ? (
-        <FinanceChart monthlyData={monthlyData} categoryData={categoryData} />
+        <FinanceChart incomeData={incomeData} expenseData={expenseData} />
       ) : (
         <Card>
           <EmptyState
             icon={PieChartIcon}
-            title="Belum ada data keuangan"
-            description="Tambahkan transaksi untuk melihat grafik pemasukan dan pengeluaran."
+            title="Belum ada transaksi bulan ini"
+            description="Tambahkan transaksi untuk melihat grafik pengeluaran per kategori."
             action={{ label: 'Tambah Transaksi', onClick: openAddTx }}
           />
         </Card>
       )}
-
-      {/* Budget Section */}
-      <div>
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-white">Budget Bulanan</h2>
-          <button
-            onClick={() => setBudgetFormOpen(true)}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary-dark"
-          >
-            <Plus size={14} />
-            Tambah
-          </button>
-        </div>
-
-        {budgetLoading ? (
-          <LoadingSpinner className="py-4" size={24} />
-        ) : budgets && budgets.length > 0 ? (
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {budgets.map((budget) => (
-              <BudgetCard
-                key={budget.id}
-                budget={budget}
-                spent={categorySpending[budget.category] || 0}
-                onDelete={handleDeleteBudget}
-              />
-            ))}
-          </div>
-        ) : (
-          <Card>
-            <EmptyState
-              icon={Wallet}
-              title="Belum ada budget"
-              description="Atur batas pengeluaran per kategori untuk membantu mengelola keuangan."
-              action={{
-                label: 'Tambah Budget',
-                onClick: () => setBudgetFormOpen(true),
-              }}
-            />
-          </Card>
-        )}
-      </div>
-
-      {/* Transaction Section */}
-      <div>
-        <TransactionTable
-          transactions={transactions}
-          isLoading={txLoading}
-          selectedMonth={filterMonth}
-          selectedYear={filterYear}
-          onMonthChange={setFilterMonth}
-          onYearChange={setFilterYear}
-          onAdd={openAddTx}
-          onEdit={handleEditTx}
-          onDelete={handleDeleteTx}
-        />
-      </div>
 
       {/* Modals */}
       <TransactionForm

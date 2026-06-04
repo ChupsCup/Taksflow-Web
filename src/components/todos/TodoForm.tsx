@@ -1,7 +1,8 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import { X } from 'lucide-react';
 import { Card } from '../ui/Card';
-import { TODO_CATEGORIES, type Todo, type TodoPriority, type TodoStatus } from '../../types';
+import { getTodoCategories } from '../../lib/utils';
+import { type Todo, type TodoPriority, type TodoStatus } from '../../types';
 
 interface TodoFormProps {
   isOpen: boolean;
@@ -23,7 +24,7 @@ interface TodoFormState {
 const defaultForm: TodoFormState = {
   title: '',
   description: '',
-  category: TODO_CATEGORIES[0],
+  category: '',
   priority: 'medium',
   status: 'pending',
   due_date: '',
@@ -31,8 +32,10 @@ const defaultForm: TodoFormState = {
 
 export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting }: TodoFormProps) {
   const [form, setForm] = useState(defaultForm);
+  const [categories, setCategories] = useState<string[]>(() => getTodoCategories());
 
   useEffect(() => {
+    setCategories(getTodoCategories());
     if (initialData) {
       setForm({
         title: initialData.title,
@@ -72,7 +75,7 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
       <Card className="relative z-10 w-full max-w-lg mx-4 p-6 animate-in fade-in zoom-in-95 duration-200">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold text-white">
-            {initialData ? 'Edit Todo' : 'New Todo'}
+            {initialData ? 'Edit Tugas' : 'Tugas Baru'}
           </h2>
           <button
             onClick={onClose}
@@ -86,13 +89,13 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
           {/* Title */}
           <div>
             <label className="mb-1.5 block text-sm font-medium text-dark-muted">
-              Title <span className="text-red-400">*</span>
+              Judul <span className="text-red-400">*</span>
             </label>
             <input
               type="text"
               value={form.title}
               onChange={(e) => update('title', e.target.value)}
-              placeholder="What needs to be done?"
+              placeholder="Apa yang perlu dilakukan?"
               className="w-full rounded-lg border border-dark-border bg-dark-bg px-3.5 py-2.5 text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
               autoFocus
               required
@@ -101,11 +104,11 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
 
           {/* Description */}
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-dark-muted">Description</label>
+            <label className="mb-1.5 block text-sm font-medium text-dark-muted">Deskripsi</label>
             <textarea
               value={form.description}
               onChange={(e) => update('description', e.target.value)}
-              placeholder="Add some details..."
+              placeholder="Tambahkan detail..."
               rows={3}
               className="w-full resize-none rounded-lg border border-dark-border bg-dark-bg px-3.5 py-2.5 text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
             />
@@ -114,13 +117,13 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
           {/* Category & Priority Row */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-dark-muted">Category</label>
+              <label className="mb-1.5 block text-sm font-medium text-dark-muted">Kategori</label>
               <select
                 value={form.category}
                 onChange={(e) => update('category', e.target.value)}
                 className="w-full rounded-lg border border-dark-border bg-dark-bg px-3.5 py-2.5 text-sm text-white outline-none transition-colors focus:border-primary"
               >
-                {TODO_CATEGORIES.map((cat) => (
+                {categories.map((cat) => (
                   <option key={cat} value={cat}>
                     {cat}
                   </option>
@@ -129,15 +132,15 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
             </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-dark-muted">Priority</label>
+              <label className="mb-1.5 block text-sm font-medium text-dark-muted">Prioritas</label>
               <select
                 value={form.priority}
                 onChange={(e) => update('priority', e.target.value as TodoPriority)}
                 className="w-full rounded-lg border border-dark-border bg-dark-bg px-3.5 py-2.5 text-sm text-white outline-none transition-colors focus:border-primary"
               >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
+                <option value="low">Rendah</option>
+                <option value="medium">Sedang</option>
+                <option value="high">Tinggi</option>
               </select>
             </div>
           </div>
@@ -145,7 +148,7 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
           {/* Due Date & Status Row */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-dark-muted">Due Date</label>
+              <label className="mb-1.5 block text-sm font-medium text-dark-muted">Tenggat</label>
               <input
                 type="date"
                 value={form.due_date}
@@ -161,9 +164,9 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
                 onChange={(e) => update('status', e.target.value as TodoStatus)}
                 className="w-full rounded-lg border border-dark-border bg-dark-bg px-3.5 py-2.5 text-sm text-white outline-none transition-colors focus:border-primary"
               >
-                <option value="pending">Pending</option>
-                <option value="in_progress">In Progress</option>
-                <option value="done">Done</option>
+                <option value="pending">Menunggu</option>
+                <option value="in_progress">Diproses</option>
+                <option value="done">Selesai</option>
               </select>
             </div>
           </div>
@@ -175,14 +178,14 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
               onClick={onClose}
               className="rounded-lg border border-dark-border px-4 py-2 text-sm font-medium text-dark-muted transition-colors hover:bg-dark-hover hover:text-white"
             >
-              Cancel
+              Batal
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !form.title.trim()}
               className="rounded-lg bg-primary px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/80 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isSubmitting ? 'Saving...' : initialData ? 'Update Todo' : 'Add Todo'}
+              {isSubmitting ? 'Menyimpan...' : initialData ? 'Perbarui Tugas' : 'Tambah Tugas'}
             </button>
           </div>
         </form>

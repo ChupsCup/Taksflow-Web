@@ -1,133 +1,151 @@
+import { useState } from 'react';
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
-  Legend,
+  Tooltip,
+  ResponsiveContainer,
 } from 'recharts';
-import type { MonthlySummary, CategoryTotals } from '../../types';
+import type { CategoryTotals } from '../../types';
 import { formatCurrency } from '../../lib/utils';
 import { Card } from '../ui/Card';
 
 interface FinanceChartProps {
-  monthlyData: MonthlySummary[];
-  categoryData: CategoryTotals[];
+  incomeData: CategoryTotals[];
+  expenseData: CategoryTotals[];
 }
 
-const CHART_COLORS = ['#7C6AF7', '#3ECFA8', '#F7A26A', '#F76A8A', '#6b6b80', '#9B8DF9'];
+const COLORS = ['#3ECFA8', '#7C6AF7', '#F76A8A', '#F7A26A', '#5B8DEF', '#FF6B9D'];
 
-function CustomTooltip({ active, payload, label }: any) {
-  if (!active || !payload) return null;
-  return (
-    <div className="rounded-lg border border-dark-border bg-dark-card px-3 py-2 shadow-xl">
-      <p className="mb-1 text-xs text-dark-muted">{label}</p>
-      {payload.map((entry: any, idx: number) => (
-        <p key={idx} className="text-sm font-medium" style={{ color: entry.color }}>
-          {entry.name}: {formatCurrency(entry.value)}
-        </p>
-      ))}
-    </div>
-  );
+function sumTotal(data: CategoryTotals[]) {
+  return data.reduce((acc, cur) => acc + cur.total, 0);
 }
 
-function PieTooltip({ active, payload }: any) {
+function TooltipContent({ active, payload }: any) {
   if (!active || !payload || !payload[0]) return null;
   const entry = payload[0];
   return (
     <div className="rounded-lg border border-dark-border bg-dark-card px-3 py-2 shadow-xl">
+      <p className="text-xs text-dark-muted">{entry.payload.category}</p>
       <p className="text-sm font-medium text-white">
-        {entry.name}: {formatCurrency(entry.value)}
+        {formatCurrency(entry.value)}
       </p>
+      <p className="text-[10px] text-dark-muted">{entry.payload.percentage}%</p>
     </div>
   );
 }
 
-export function FinanceChart({ monthlyData, categoryData }: FinanceChartProps) {
-  const hasMonthlyData = monthlyData.length > 0;
-  const hasCategoryData = categoryData.length > 0;
+export function FinanceChart({ incomeData, expenseData }: FinanceChartProps) {
+  const [view, setView] = useState<'income' | 'expense'>('expense');
+
+  const data = view === 'income' ? incomeData : expenseData;
+  const total = sumTotal(data);
+  const hasData = data.length > 0;
 
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-      {/* BarChart: Monthly Income vs Expense */}
-      <Card className="min-w-0">
-        <h3 className="mb-3 text-xs font-semibold text-white">Pendapatan & Pengeluaran Bulanan</h3>
-        {hasMonthlyData ? (
-          <div className="h-48 w-full overflow-hidden sm:h-56">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={monthlyData} barGap={4} margin={{ top: 4, right: 4, bottom: 0, left: -16 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e1e2a" />
-                <XAxis
-                  dataKey="month"
-                  tick={{ fill: '#6b6b80', fontSize: 12 }}
-                  axisLine={{ stroke: '#1e1e2a' }}
-                  tickLine={false}
-                />
-                <YAxis
-                  tick={{ fill: '#6b6b80', fontSize: 12 }}
-                  axisLine={false}
-                  tickLine={false}
-                  tickFormatter={(v: number) =>
-                    v >= 1000000 ? `${(v / 1000000).toFixed(1)}jt` : v >= 1000 ? `${(v / 1000).toFixed(0)}rb` : String(v)
-                  }
-                />
-                <Tooltip content={<CustomTooltip />} wrapperStyle={{ zIndex: 50 }} />
-                <Bar dataKey="income" name="Pemasukan" fill="#3ECFA8" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="expense" name="Pengeluaran" fill="#F76A8A" radius={[4, 4, 0, 0]} maxBarSize={32} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        ) : (
-          <p className="py-16 text-center text-sm text-dark-muted">Belum ada data bulanan</p>
-        )}
-      </Card>
+    <Card>
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-[11px] font-semibold text-white">
+          Pengeluaran per Kategori
+        </h3>
 
-      {/* PieChart: Expense by Category */}
-      <Card className="min-w-0">
-        <h3 className="mb-3 text-xs font-semibold text-white">Pengeluaran per Kategori</h3>
-        {hasCategoryData ? (
-          <div className="h-48 w-full overflow-hidden sm:h-56">
+        {/* Toggle */}
+        <div className="flex gap-1 rounded-lg bg-dark-bg p-0.5">
+          <button
+            type="button"
+            onClick={() => setView('expense')}
+            className={`rounded-md px-2.5 py-1 text-[10px] font-medium transition-colors ${
+              view === 'expense'
+                ? 'bg-accent-pink text-white'
+                : 'text-dark-muted hover:text-white'
+            }`}
+          >
+            Pengeluaran
+          </button>
+          <button
+            type="button"
+            onClick={() => setView('income')}
+            className={`rounded-md px-2.5 py-1 text-[10px] font-medium transition-colors ${
+              view === 'income'
+                ? 'bg-secondary text-white'
+                : 'text-dark-muted hover:text-white'
+            }`}
+          >
+            Pemasukan
+          </button>
+        </div>
+      </div>
+
+      {hasData ? (
+        <div className="flex flex-col items-center sm:flex-row sm:items-start sm:gap-6">
+          {/* Donut */}
+          <div className="relative h-36 w-36 shrink-0 sm:h-40 sm:w-40">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={categoryData}
+                  data={data}
                   cx="50%"
                   cy="50%"
-                  innerRadius={55}
-                  outerRadius={90}
+                  innerRadius={50}
+                  outerRadius={72}
                   paddingAngle={3}
                   dataKey="total"
                   nameKey="category"
+                  animationDuration={400}
+                  animationBegin={0}
                 >
-                  {categoryData.map((entry, idx) => (
+                  {data.map((entry, idx) => (
                     <Cell
                       key={entry.category}
-                      fill={entry.color || CHART_COLORS[idx % CHART_COLORS.length]}
+                      fill={COLORS[idx % COLORS.length]}
                     />
                   ))}
                 </Pie>
-                <Tooltip content={<PieTooltip />} wrapperStyle={{ zIndex: 50 }} />
-                <Legend
-                  verticalAlign="bottom"
-                  height={36}
-                  formatter={(value: string) => (
-                    <span className="text-xs text-dark-muted">{value}</span>
-                  )}
-                />
+                <Tooltip content={<TooltipContent />} wrapperStyle={{ zIndex: 50 }} />
               </PieChart>
             </ResponsiveContainer>
+            {/* Center total */}
+            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-[9px] text-dark-muted">Total</span>
+              <span className="text-xs font-bold text-white">
+                {formatCurrency(total)}
+              </span>
+            </div>
           </div>
-        ) : (
-          <p className="py-16 text-center text-sm text-dark-muted">
-            Belum ada pengeluaran bulan ini
-          </p>
-        )}
-      </Card>
-    </div>
+
+          {/* Legend */}
+          <div className="mt-3 flex-1 self-center sm:mt-0">
+            <div className="space-y-1">
+              {data.map((entry, idx) => (
+                <div
+                  key={entry.category}
+                  className="flex items-center justify-between gap-3 rounded-md px-2 py-1 transition-colors hover:bg-dark-hover"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      className="h-2.5 w-2.5 shrink-0 rounded-full"
+                      style={{ backgroundColor: COLORS[idx % COLORS.length] }}
+                    />
+                    <span className="text-[11px] text-dark-muted">{entry.category}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-medium text-white">
+                      {formatCurrency(entry.total)}
+                    </span>
+                    <span className="w-8 text-right text-[10px] text-dark-muted">
+                      {entry.percentage}%
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <p className="py-10 text-center text-xs text-dark-muted">
+          Belum ada {view === 'income' ? 'pemasukan' : 'pengeluaran'} bulan ini
+        </p>
+      )}
+    </Card>
   );
 }

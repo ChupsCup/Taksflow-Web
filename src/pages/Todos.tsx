@@ -76,7 +76,7 @@ export default function Todos() {
   if (error) {
     return (
       <div className="flex items-center justify-center py-20">
-        <p className="text-sm text-red-400">Failed to load todos. Please try again.</p>
+        <p className="text-sm text-red-400">Gagal memuat tugas. Silakan coba lagi.</p>
       </div>
     );
   }
@@ -86,15 +86,15 @@ export default function Todos() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Todos</h1>
-          <p className="mt-1 text-sm text-dark-muted">Manage your tasks and stay productive</p>
+          <h1 className="text-2xl font-bold text-white">Daftar Tugas</h1>
+          <p className="mt-1 text-sm text-dark-muted">Kelola tugasmu dan tetap produktif</p>
         </div>
         <button
           onClick={openCreateForm}
           className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary/80"
         >
           <Plus size={18} />
-          Add Todo
+          Tambah Tugas
         </button>
       </div>
 

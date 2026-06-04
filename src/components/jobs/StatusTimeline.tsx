@@ -48,49 +48,28 @@ export function StatusTimeline() {
   );
 
   return (
-    <div className="flex flex-wrap items-start gap-3">
+    <div className="flex flex-wrap items-start gap-2">
       {pipelineStages.map((status, index) => {
         const apps = grouped[status];
         const count = apps.length;
         const isTerminal = status === 'accepted' || status === 'rejected';
 
         return (
-          <div key={status} className="flex items-start gap-3">
+          <div key={status} className="flex items-start gap-1.5">
             {/* Stage card */}
-            <div className={`min-w-[160px] flex-1 rounded-lg border border-dark-border p-4 border-l-4 ${stageColors[status]}`}>
-              <div className="flex items-center gap-2 mb-2">
-                <span className={`h-2.5 w-2.5 rounded-full ${dotColors[status]}`} />
-                <span className="text-sm font-medium text-white">
+            <div className={`min-w-[100px] flex-1 rounded-lg border border-dark-border p-2 border-l-4 ${stageColors[status]}`}>
+              <div className="flex items-center gap-1.5">
+                <span className={`h-2 w-2 shrink-0 rounded-full ${dotColors[status]}`} />
+                <span className="truncate text-[11px] font-medium text-white">
                   {APPLICATION_STATUS_LABELS[status]}
                 </span>
-                <span className="ml-auto flex h-5 min-w-[20px] items-center justify-center rounded-full bg-dark-hover px-1.5 text-xs font-semibold text-dark-muted">
+                <span className="ml-auto flex h-4 min-w-[18px] items-center justify-center rounded-full bg-dark-hover px-1 text-[10px] font-semibold text-dark-muted">
                   {count}
                 </span>
               </div>
 
-              {count > 0 ? (
-                <ul className="space-y-1">
-                  {apps.slice(0, 4).map((app) => (
-                    <li
-                      key={app.id}
-                      className="truncate text-xs text-dark-muted"
-                      title={`${app.company} - ${app.position}`}
-                    >
-                      {app.company}
-                    </li>
-                  ))}
-                  {count > 4 && (
-                    <li className="text-xs text-dark-muted/60">
-                      +{count - 4} lainnya
-                    </li>
-                  )}
-                </ul>
-              ) : (
-                <p className="text-xs text-dark-muted/40 italic">Kosong</p>
-              )}
-
-              {isTerminal && count > 0 && (
-                <p className="mt-2 text-[10px] font-medium uppercase tracking-wider text-dark-muted/50">
+              {count > 0 && isTerminal && (
+                <p className="mt-1 text-[9px] font-medium tracking-wider text-dark-muted/50">
                   {status === 'accepted' ? '✅ Diterima' : '❌ Ditolak'}
                 </p>
               )}
@@ -98,10 +77,10 @@ export function StatusTimeline() {
 
             {/* Arrow connector */}
             {index < pipelineStages.length - 1 && (
-              <div className="hidden sm:flex items-center self-center pt-6">
+              <div className="hidden sm:flex items-center self-center">
                 <svg
-                  width="20"
-                  height="20"
+                  width="14"
+                  height="14"
                   viewBox="0 0 20 20"
                   fill="none"
                   className="text-dark-border shrink-0"

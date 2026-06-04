@@ -50,6 +50,41 @@ export function isOverdue(dateStr: string | null): boolean {
   }
 }
 
+const DEFAULT_CATEGORIES = ['Pekerjaan', 'Pribadi', 'Belajar', 'Kesehatan', 'Keuangan', 'Rumah', 'Lainnya'];
+const CAT_STORAGE_KEY = 'taksflow-todo-categories';
+
+export function getTodoCategories(): string[] {
+  try {
+    const raw = localStorage.getItem(CAT_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch {}
+  return [...DEFAULT_CATEGORIES];
+}
+
+export function saveTodoCategories(categories: string[]): void {
+  try {
+    localStorage.setItem(CAT_STORAGE_KEY, JSON.stringify(categories));
+  } catch {}
+}
+
+export function addTodoCategory(name: string): string[] {
+  const cats = getTodoCategories();
+  if (!cats.includes(name)) {
+    cats.push(name);
+    saveTodoCategories(cats);
+  }
+  return cats;
+}
+
+export function removeTodoCategory(name: string): string[] {
+  const cats = getTodoCategories().filter((c) => c !== name);
+  saveTodoCategories(cats);
+  return cats;
+}
+
 export function daysUntil(dateStr: string | null): number {
   if (!dateStr) return Infinity;
   try {
