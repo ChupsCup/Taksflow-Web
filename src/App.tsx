@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { AppLayout } from './components/layout/AppLayout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -23,15 +24,17 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route element={<AppLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="/finance" element={<Finance />} />
-              <Route path="/jobs" element={<Jobs />} />
-              <Route path="/todos" element={<Todos />} />
-            </Route>
-          </Routes>
+          <ThemeProvider>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route element={<AppLayout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="/finance" element={<Finance />} />
+                <Route path="/jobs" element={<Jobs />} />
+                <Route path="/todos" element={<Todos />} />
+              </Route>
+            </Routes>
+          </ThemeProvider>
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>

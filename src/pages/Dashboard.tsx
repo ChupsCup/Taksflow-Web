@@ -1,4 +1,5 @@
-import { Wallet, Briefcase, CheckSquare, TrendingUp, TrendingDown, Calendar, LogOut } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { Wallet, Briefcase, CheckSquare, TrendingUp, TrendingDown, Calendar, Settings, Moon, Sun, Image, Download, LogOut, Upload } from 'lucide-react';
 import { Card } from '../components/ui/Card';
 import { StatCard } from '../components/ui/StatCard';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
@@ -7,6 +8,7 @@ import { useJobsStats } from '../hooks/useJobApplications';
 import { useTodosStats } from '../hooks/useTodos';
 import { formatCurrency, getMonthRange } from '../lib/utils';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function Dashboard() {
   const { start, end } = getMonthRange();
@@ -19,7 +21,38 @@ export default function Dashboard() {
   const balance = income - expense;
 
   const { signOut } = useAuth();
+  const { theme, toggleTheme, wallpaper, setWallpaper } = useTheme();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
   const isLoading = txLoading || jobsLoading || todoLoading;
+
+  function handleWallpaper(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setWallpaper(reader.result as string);
+    reader.readAsDataURL(file);
+  }
+
+  function exportCSV() {
+    if (!transactions || transactions.length === 0) {
+      alert('Belum ada data transaksi untuk diekspor.');
+      return;
+    }
+    const rows = [['Tanggal', 'Jenis', 'Kategori', 'Deskripsi', 'Jumlah']];
+    for (const t of transactions) {
+      rows.push([t.date, t.type === 'income' ? 'Pemasukan' : 'Pengeluaran', t.category, t.description || '', String(t.amount)]);
+    }
+    const csv = rows.map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'taksflow-transaksi.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+    setMenuOpen(false);
+  }
 
   if (isLoading) {
     return (
@@ -32,16 +65,70 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="relative">
-        <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-        <p className="mt-1 text-sm text-dark-muted">Ringkasan aktivitas bulan ini</p>
-        <button
-          onClick={signOut}
-          className="absolute right-0 top-0 rounded-lg p-2 text-dark-muted transition-colors hover:bg-dark-hover hover:text-accent-pink"
-          title="Keluar"
-        >
-          <LogOut size={20} />
-        </button>
+      <div className="relative flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <p className="mt-1 text-sm text-dark-muted">Ringkasan aktivitas bulan ini</p>
+        </div>
+
+        <div className="relative">
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="rounded-lg p-2 text-dark-muted transition-colors hover:bg-dark-hover hover:text-white"
+            title="Pengaturan"
+          >
+            <Settings size={20} />
+          </button>
+
+          {menuOpen && (
+            <>
+              <div className="fixed inset-0 z-30" onClick={() => setMenuOpen(false)} />
+              <div className="absolute right-0 top-full z-40 mt-2 w-48 overflow-hidden rounded-xl border border-dark-border bg-dark-card shadow-xl">
+                <button
+                  onClick={() => { toggleTheme(); setMenuOpen(false); }}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-sm text-white transition-colors hover:bg-dark-hover"
+                >
+                  {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                  {theme === 'dark' ? 'Mode Terang' : 'Mode Gelap'}
+                </button>
+
+                <button
+                  onClick={() => fileRef.current?.click()}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-sm text-white transition-colors hover:bg-dark-hover"
+                >
+                  {wallpaper ? <Upload size={18} /> : <Image size={18} />}
+                  {wallpaper ? 'Ganti Latar' : 'Pasang Latar'}
+                </button>
+
+                <button
+                  onClick={exportCSV}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-sm text-white transition-colors hover:bg-dark-hover"
+                >
+                  <Download size={18} />
+                  Ekspor CSV
+                </button>
+
+                <div className="h-px bg-dark-border" />
+
+                <button
+                  onClick={() => { signOut(); setMenuOpen(false); }}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-sm text-accent-pink transition-colors hover:bg-dark-hover"
+                >
+                  <LogOut size={18} />
+                  Keluar
+                </button>
+              </div>
+            </>
+          )}
+
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleWallpaper}
+          />
+        </div>
       </div>
 
       {/* Stats Grid */}

@@ -1,24 +1,77 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #7C6AF7;
-  --color-secondary: #3ECFA8;
-  --color-accent-orange: #F7A26A;
-  --color-accent-pink: #F76A8A;
-  --color-primary-light: #9B8DF9;
-  --color-primary-dark: #5B4AD4;
-  --color-dark-bg: #0a0a0f;
-  --color-dark-card: #13131a;
-  --color-dark-border: #1e1e2a;
-  --color-dark-hover: #1a1a26;
-  --color-dark-muted: #6b6b80;
+  --color-primary: var(--c-primary);
+  --color-secondary: var(--c-secondary);
+  --color-accent-orange: var(--c-accent-orange);
+  --color-accent-pink: var(--c-accent-pink);
+  --color-primary-light: var(--c-primary-light);
+  --color-primary-dark: var(--c-primary-dark);
+  --color-dark-bg: var(--c-dark-bg);
+  --color-dark-card: var(--c-dark-card);
+  --color-dark-border: var(--c-dark-border);
+  --color-dark-hover: var(--c-dark-hover);
+  --color-dark-muted: var(--c-dark-muted);
+  --color-white: var(--c-text-primary);
+}
+
+:root,
+[data-theme="dark"] {
+  --c-primary: #7c6af7;
+  --c-secondary: #3ecfa8;
+  --c-accent-orange: #f7a26a;
+  --c-accent-pink: #f76a8a;
+  --c-primary-light: #9b8df9;
+  --c-primary-dark: #5b4ad4;
+  --c-dark-bg: #0a0a0f;
+  --c-dark-card: #13131a;
+  --c-dark-border: #1e1e2a;
+  --c-dark-hover: #1a1a26;
+  --c-dark-muted: #6b6b80;
+  --c-text-primary: #e8e8f0;
+}
+
+[data-theme="light"] {
+  --c-primary: #7c6af7;
+  --c-secondary: #3ecfa8;
+  --c-accent-orange: #f7a26a;
+  --c-accent-pink: #f76a8a;
+  --c-primary-light: #9b8df9;
+  --c-primary-dark: #5b4ad4;
+  --c-dark-bg: #f2f2f7;
+  --c-dark-card: #ffffff;
+  --c-dark-border: #d1d1d6;
+  --c-dark-hover: #e5e5ea;
+  --c-dark-muted: #8e8e93;
+  --c-text-primary: #1a1a2e;
+}
+
+html.has-wallpaper {
+  --c-wallpaper: var(--bg-image);
+}
+
+html.has-wallpaper body {
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-color: transparent;
+}
+
+html.has-wallpaper #root {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+[data-theme="light"] html.has-wallpaper #root {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 body {
   margin: 0;
-  background-color: var(--color-dark-bg);
-  color: #e8e8f0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--c-dark-bg);
+  color: var(--c-text-primary);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
   width: 100%;
@@ -30,7 +83,11 @@ body {
   width: 100%;
 }
 
-img, svg, video, canvas, iframe {
+img,
+svg,
+video,
+canvas,
+iframe {
   max-width: 100%;
   height: auto;
 }
@@ -40,12 +97,12 @@ img, svg, video, canvas, iframe {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-dark-bg);
+  background: var(--c-dark-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-dark-border);
+  background: var(--c-dark-border);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-dark-muted);
+  background: var(--c-dark-muted);
 }
