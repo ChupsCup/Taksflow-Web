@@ -24,19 +24,25 @@ export function AppLayout() {
   return (
     <div
       className={cn(
-        'relative flex min-h-screen min-h-[100dvh]',
+        'relative flex min-h-screen min-h-[100dvh] flex-col',
         wallpaper ? 'bg-transparent' : 'bg-dark-bg'
       )}
+      style={
+        wallpaper
+          ? {
+              backgroundImage: `url(${wallpaper})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundAttachment: 'fixed',
+            }
+          : undefined
+      }
     >
-      {wallpaper && (
-        <div
-          className="fixed inset-0 -z-10 bg-cover bg-center bg-fixed"
-          style={{ backgroundImage: `url(${wallpaper})` }}
-        />
-      )}
-      <div className="fixed inset-0 -z-10 bg-dark-bg/40 backdrop-blur-sm" />
-      <Sidebar />
-      <main className="min-w-0 flex-1 lg:pb-16">
+      {wallpaper && <div className="absolute inset-0 bg-dark-bg/40 backdrop-blur-sm" />}
+      <div className="relative z-10">
+        <Sidebar />
+      </div>
+      <main className="relative z-10 flex-1 lg:pb-16">
         <div className="mx-auto w-full max-w-6xl px-4 py-6 pb-24 lg:pb-6">
           <Outlet />
         </div>
