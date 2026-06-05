@@ -38,7 +38,7 @@ export function AppLayout() {
           : undefined
       }
     >
-      {wallpaper && <div className="absolute inset-0 bg-dark-bg/40 backdrop-blur-sm" />}
+      {wallpaper && <div className="fixed inset-0 z-[1] bg-dark-bg/40 backdrop-blur-sm" />}
       <div className="relative z-10">
         <Sidebar />
       </div>
