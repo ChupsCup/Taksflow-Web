@@ -52,9 +52,19 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
   useEffect(() => {
     if (!isOpen) return;
     const scrollY = window.scrollY;
+    const html = document.documentElement;
+    html.style.overflow = 'hidden';
+    html.style.height = '100%';
     document.body.style.overflow = 'hidden';
+    document.body.style.height = '100%';
+    const preventScroll = () => window.scrollTo(0, scrollY);
+    window.addEventListener('scroll', preventScroll, { passive: false });
     return () => {
+      html.style.overflow = '';
+      html.style.height = '';
       document.body.style.overflow = '';
+      document.body.style.height = '';
+      window.removeEventListener('scroll', preventScroll);
       window.scrollTo(0, scrollY);
     };
   }, [isOpen]);
