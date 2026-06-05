@@ -84,17 +84,16 @@ export default function Todos() {
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Daftar Tugas</h1>
-          <p className="mt-1 text-sm text-dark-muted">Kelola tugasmu dan tetap produktif</p>
+          <h1 className="text-xl font-bold text-white sm:text-2xl">Daftar Tugas</h1>
+          <p className="mt-0.5 text-xs text-dark-muted sm:mt-1 sm:text-sm">Kelola tugasmu dan tetap produktif</p>
         </div>
         <button
           onClick={openCreateForm}
-          className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary/80 sm:gap-2 sm:px-4 sm:py-2.5 sm:text-sm"
+          className="flex items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-primary/80 sm:px-4 sm:py-2.5 sm:text-sm"
         >
-          <Plus size={14} className="sm:hidden" />
-          <Plus size={18} className="hidden sm:block" />
+          <Plus size={16} />
           Tambah Tugas
         </button>
       </div>
