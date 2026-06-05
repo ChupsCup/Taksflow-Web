@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent } from 'react';
+import { useState, useEffect, useRef, type FormEvent } from 'react';
 import { X, Building2, MapPin, DollarSign, ExternalLink, Calendar } from 'lucide-react';
 import { useCreateJobApplication, useUpdateJobApplication } from '../../hooks/useJobApplications';
 import { APPLICATION_STATUS_LABELS } from '../../types';
@@ -242,6 +242,13 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
   const [responseReceived, setResponseReceived] = useState(false);
   const [notes, setNotes] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const mobileFormRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      setTimeout(() => mobileFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+  }, [open]);
 
   useEffect(() => {
     if (application) {
@@ -330,7 +337,7 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
   return (
     <>
       {/* Mobile: inline form in page flow */}
-      <div className="block sm:hidden rounded-xl border border-dark-border bg-dark-card p-3">
+      <div ref={mobileFormRef} className="block sm:hidden rounded-xl border border-dark-border bg-dark-card p-3">
         <FormContent {...formProps} />
       </div>
 

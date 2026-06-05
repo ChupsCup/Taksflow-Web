@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent } from 'react';
+import { useState, useEffect, useRef, type FormEvent } from 'react';
 import { X } from 'lucide-react';
 import { getTodoCategories } from '../../lib/utils';
 import { type Todo, type TodoPriority, type TodoStatus } from '../../types';
@@ -158,6 +158,13 @@ function FormContent({
 export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting }: TodoFormProps) {
   const [form, setForm] = useState(defaultForm);
   const [categories, setCategories] = useState<string[]>(() => getTodoCategories());
+  const mobileFormRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => mobileFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     setCategories(getTodoCategories());
@@ -201,7 +208,7 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
   return (
     <>
       {/* Mobile: inline form in page flow */}
-      <div className="block sm:hidden rounded-xl border border-dark-border bg-dark-card p-3">
+      <div ref={mobileFormRef} className="block sm:hidden rounded-xl border border-dark-border bg-dark-card p-3">
         <FormContent {...formProps} />
       </div>
 
