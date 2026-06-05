@@ -8,7 +8,7 @@ export function AppLayout() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-dark-bg">
+      <div className="flex min-h-screen min-h-[100dvh] items-center justify-center bg-dark-bg">
         <LoadingSpinner size={48} />
       </div>
     );
@@ -19,7 +19,7 @@ export function AppLayout() {
   }
 
   return (
-    <div className="flex min-h-screen bg-dark-bg">
+    <div className="flex min-h-screen min-h-[100dvh] bg-dark-bg">
       <Sidebar />
       <main className="min-w-0 flex-1 lg:pl-64">
         <div className="mx-auto w-full max-w-6xl px-4 py-6 pt-16 lg:pt-6">
