@@ -91,9 +91,10 @@ export default function Todos() {
         </div>
         <button
           onClick={openCreateForm}
-          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary/80"
+          className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary/80 sm:gap-2 sm:px-4 sm:py-2.5 sm:text-sm"
         >
-          <Plus size={18} />
+          <Plus size={14} className="sm:hidden" />
+          <Plus size={18} className="hidden sm:block" />
           Tambah Tugas
         </button>
       </div>
