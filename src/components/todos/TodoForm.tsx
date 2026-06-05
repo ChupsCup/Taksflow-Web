@@ -191,20 +191,18 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
                     </select>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-1.5">
-                  <div>
-                    <label className="mb-px block text-[10px] font-medium text-dark-muted">Tenggat</label>
-                    <input type="date" value={form.due_date} onChange={(e) => update('due_date', e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-xs text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
-                  </div>
-                  <div>
-                    <label className="mb-px block text-[10px] font-medium text-dark-muted">Status</label>
-                    <select value={form.status} onChange={(e) => update('status', e.target.value as TodoStatus)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white outline-none transition-colors focus:border-primary">
-                      <option value="pending">Menunggu</option>
-                      <option value="in_progress">Diproses</option>
-                      <option value="done">Selesai</option>
-                    </select>
-                  </div>
-                </div>
+              <div>
+                <label className="mb-px block text-[10px] font-medium text-dark-muted">Tenggat</label>
+                <input type="date" value={form.due_date} onChange={(e) => update('due_date', e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-xs text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
+              </div>
+              <div>
+                <label className="mb-px block text-[10px] font-medium text-dark-muted">Status</label>
+                <select value={form.status} onChange={(e) => update('status', e.target.value as TodoStatus)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white outline-none transition-colors focus:border-primary">
+                  <option value="pending">Menunggu</option>
+                  <option value="in_progress">Diproses</option>
+                  <option value="done">Selesai</option>
+                </select>
+              </div>
                 <div className="flex justify-end gap-1.5 pt-0.5">
                   <button type="button" onClick={onClose} className="rounded-lg border border-dark-border px-3 py-1 text-[10px] font-medium text-dark-muted transition-colors hover:bg-dark-hover hover:text-white">Batal</button>
                   <button type="submit" disabled={isSubmitting || !form.title.trim()} className="rounded-lg bg-primary px-3 py-1 text-[10px] font-medium text-white transition-colors hover:bg-primary/80 disabled:cursor-not-allowed disabled:opacity-50">
