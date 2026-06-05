@@ -213,8 +213,8 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
 
       {/* Mobile: bottom sheet */}
       <div className="block sm:hidden">
-        <div className="fixed inset-0 z-50 bg-black/60" onClick={onClose} />
-        <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col max-h-[85vh] rounded-t-2xl border border-dark-border bg-dark-card">
+        <div className="fixed inset-0 z-50 bg-black/60 touch-none" onClick={onClose} />
+        <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col max-h-[85vh] rounded-t-2xl border border-dark-border bg-dark-card overscroll-contain">
           <div className="shrink-0 flex items-center justify-between p-3 border-b border-dark-border">
             <h2 className="text-sm font-semibold text-white">
               {isEdit ? 'Edit Lamaran' : 'Tambah Lamaran'}
