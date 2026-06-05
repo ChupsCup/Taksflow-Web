@@ -1,5 +1,5 @@
 import { useState, useEffect, type FormEvent } from 'react';
-import { X, Building2, MapPin, DollarSign, ExternalLink, Calendar, ChevronDown, ChevronUp } from 'lucide-react';
+import { X, Building2, MapPin, DollarSign, ExternalLink, Calendar } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { useCreateJobApplication, useUpdateJobApplication } from '../../hooks/useJobApplications';
 import { APPLICATION_STATUS_LABELS } from '../../types';
@@ -30,7 +30,6 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
   const [responseReceived, setResponseReceived] = useState(false);
   const [notes, setNotes] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
     if (application) {
@@ -59,7 +58,6 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
       setNotes('');
     }
     setError(null);
-    setShowMore(false);
   }, [application, open]);
 
   useEffect(() => {
@@ -114,15 +112,12 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
 
   return (
     <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center pt-12 sm:pt-0 sm:p-4">
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      {/* Modal */}
       <Card className="relative z-10 w-full max-w-lg max-h-[80vh] sm:max-h-[85vh] overflow-y-auto p-3 sm:p-6 mx-3 sm:mx-0">
-        {/* Header */}
         <div className="flex items-center justify-between mb-3 sm:mb-6">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="hidden sm:flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
@@ -147,7 +142,6 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-4">
-          {/* Company & Position */}
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-4">
             <div>
               <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
@@ -175,160 +169,137 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
             </div>
           </div>
 
-          {/* Status */}
-          <div>
-            <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">Status</label>
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value as ApplicationStatus)}
-              className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary"
-            >
-              {statusOptions.map((s) => (
-                <option key={s} value={s}>
-                  {APPLICATION_STATUS_LABELS[s]}
-                </option>
-              ))}
-            </select>
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-4">
+            <div>
+              <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
+                <MapPin size={12} className="inline mr-1" />
+                Lokasi
+              </label>
+              <input
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Kota atau remote"
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
+              />
+            </div>
+            <div>
+              <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
+                <DollarSign size={12} className="inline mr-1" />
+                Gaji
+              </label>
+              <input
+                type="text"
+                value={salaryRange}
+                onChange={(e) => setSalaryRange(e.target.value)}
+                placeholder="Rp 5-10 juta"
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
+              />
+            </div>
           </div>
 
-          {/* Toggle detail */}
-          <button
-            type="button"
-            onClick={() => setShowMore(!showMore)}
-            className="flex items-center gap-1 text-xs text-primary transition-colors hover:text-primary/80"
-          >
-            {showMore ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-            {showMore ? 'Sembunyikan detail' : 'Detail lainnya'}
-          </button>
-
-          {showMore && (
-            <div className="space-y-2.5 sm:space-y-4">
-              {/* Location & Salary Range */}
-              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-4">
-                <div>
-                  <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
-                    <MapPin size={12} className="inline mr-1 sm:hidden" />
-                    <MapPin size={14} className="hidden sm:inline mr-1" />
-                    Lokasi
-                  </label>
-                  <input
-                    type="text"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    placeholder="Kota atau remote"
-                    className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
-                    <DollarSign size={12} className="inline mr-1 sm:hidden" />
-                    <DollarSign size={14} className="hidden sm:inline mr-1" />
-                    Rentang Gaji
-                  </label>
-                  <input
-                    type="text"
-                    value={salaryRange}
-                    onChange={(e) => setSalaryRange(e.target.value)}
-                    placeholder="Rp 5-10 juta"
-                    className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
-                  />
-                </div>
-              </div>
-
-              {/* Job URL */}
-              <div>
-                <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
-                  <ExternalLink size={12} className="inline mr-1 sm:hidden" />
-                  <ExternalLink size={14} className="hidden sm:inline mr-1" />
-                  URL Lowongan
-                </label>
-                <input
-                  type="url"
-                  value={jobUrl}
-                  onChange={(e) => setJobUrl(e.target.value)}
-                  placeholder="https://..."
-                  className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
-                />
-              </div>
-
-              {/* Applied Date & Interview Date */}
-              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-4">
-                <div>
-                  <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
-                    <Calendar size={12} className="inline mr-1 sm:hidden" />
-                    <Calendar size={14} className="hidden sm:inline mr-1" />
-                    Tanggal Lamar
-                  </label>
-                  <input
-                    type="date"
-                    value={appliedDate}
-                    onChange={(e) => setAppliedDate(e.target.value)}
-                    className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
-                  />
-                </div>
-                <div>
-                  <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
-                    <Calendar size={12} className="inline mr-1 sm:hidden" />
-                    <Calendar size={14} className="hidden sm:inline mr-1" />
-                    Tanggal Interview
-                  </label>
-                  <input
-                    type="date"
-                    value={interviewDate}
-                    onChange={(e) => setInterviewDate(e.target.value)}
-                    className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
-                  />
-                </div>
-              </div>
-
-              {/* Offer Date & Response Received */}
-              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-4">
-                <div>
-                  <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
-                    <Calendar size={12} className="inline mr-1 sm:hidden" />
-                    <Calendar size={14} className="hidden sm:inline mr-1" />
-                    Tanggal Offer
-                  </label>
-                  <input
-                    type="date"
-                    value={offerDate}
-                    onChange={(e) => setOfferDate(e.target.value)}
-                    className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
-                  />
-                </div>
-                <div className="flex items-end pb-1 sm:pb-2.5">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={responseReceived}
-                      onChange={(e) => setResponseReceived(e.target.checked)}
-                      className="h-4 w-4 rounded border-dark-border bg-dark-bg text-primary accent-primary outline-none focus:ring-1 focus:ring-primary"
-                    />
-                    <span className="text-xs sm:text-sm font-medium text-dark-muted">Respon Diterima</span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Notes */}
-              <div>
-                <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">Catatan</label>
-                <textarea
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Catatan tambahan..."
-                  rows={2}
-                  className="w-full resize-none rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
-                />
-              </div>
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-4">
+            <div>
+              <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
+                <ExternalLink size={12} className="inline mr-1" />
+                URL
+              </label>
+              <input
+                type="url"
+                value={jobUrl}
+                onChange={(e) => setJobUrl(e.target.value)}
+                placeholder="https://..."
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
+              />
             </div>
-          )}
+            <div>
+              <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">Status</label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value as ApplicationStatus)}
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary"
+              >
+                {statusOptions.map((s) => (
+                  <option key={s} value={s}>
+                    {APPLICATION_STATUS_LABELS[s]}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-          {/* Error */}
+          <div className="grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-4">
+            <div className="col-span-1">
+              <label className="mb-0.5 sm:mb-1 block text-[10px] sm:text-sm font-medium text-dark-muted">
+                <Calendar size={10} className="inline mr-0.5 sm:hidden" />
+                <Calendar size={14} className="hidden sm:inline mr-1" />
+                <span className="sm:hidden">Lamar</span>
+                <span className="hidden sm:inline">Tanggal Lamar</span>
+              </label>
+              <input
+                type="date"
+                value={appliedDate}
+                onChange={(e) => setAppliedDate(e.target.value)}
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-1.5 py-1 sm:px-3 sm:py-2.5 text-[11px] sm:text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
+              />
+            </div>
+            <div className="col-span-1">
+              <label className="mb-0.5 sm:mb-1 block text-[10px] sm:text-sm font-medium text-dark-muted">
+                <Calendar size={10} className="inline mr-0.5 sm:hidden" />
+                <Calendar size={14} className="hidden sm:inline mr-1" />
+                <span className="sm:hidden">Interview</span>
+                <span className="hidden sm:inline">Tanggal Interview</span>
+              </label>
+              <input
+                type="date"
+                value={interviewDate}
+                onChange={(e) => setInterviewDate(e.target.value)}
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-1.5 py-1 sm:px-3 sm:py-2.5 text-[11px] sm:text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
+              />
+            </div>
+            <div className="col-span-1">
+              <label className="mb-0.5 sm:mb-1 block text-[10px] sm:text-sm font-medium text-dark-muted">
+                <Calendar size={10} className="inline mr-0.5 sm:hidden" />
+                <Calendar size={14} className="hidden sm:inline mr-1" />
+                <span className="sm:hidden">Offer</span>
+                <span className="hidden sm:inline">Tanggal Offer</span>
+              </label>
+              <input
+                type="date"
+                value={offerDate}
+                onChange={(e) => setOfferDate(e.target.value)}
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-1.5 py-1 sm:px-3 sm:py-2.5 text-[11px] sm:text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <label className="flex items-center gap-1.5 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={responseReceived}
+                onChange={(e) => setResponseReceived(e.target.checked)}
+                className="h-3.5 w-3.5 rounded border-dark-border bg-dark-bg text-primary accent-primary outline-none focus:ring-1 focus:ring-primary"
+              />
+              <span className="text-xs sm:text-sm font-medium text-dark-muted">Respon Diterima</span>
+            </label>
+          </div>
+
+          <div>
+            <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">Catatan</label>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Catatan tambahan..."
+              rows={2}
+              className="w-full resize-none rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
+            />
+          </div>
+
           {error && (
             <p className="text-xs sm:text-sm text-accent-pink">{error}</p>
           )}
 
-          {/* Actions */}
           <div className="flex items-center justify-end gap-2 sm:gap-3 pt-1 sm:pt-2">
             <button
               type="button"
