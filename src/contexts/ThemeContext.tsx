@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 type Theme = 'dark' | 'light';
 
@@ -10,30 +10,6 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
-
-function applyWallpaper(url: string | null, theme: Theme) {
-  const root = document.getElementById('root');
-  if (!root) return;
-
-  if (url) {
-    document.body.style.backgroundImage = `url(${url})`;
-    document.body.style.backgroundSize = 'cover';
-    document.body.style.backgroundPosition = 'center';
-    document.body.style.backgroundAttachment = 'fixed';
-    document.body.style.backgroundColor = 'transparent';
-    const overlay = theme === 'dark' ? 'rgba(0, 0, 0, 0.35)' : 'rgba(255, 255, 255, 0.4)';
-    root.style.background = overlay;
-    root.style.backdropFilter = 'blur(6px)';
-  } else {
-    document.body.style.backgroundImage = '';
-    document.body.style.backgroundSize = '';
-    document.body.style.backgroundPosition = '';
-    document.body.style.backgroundAttachment = '';
-    document.body.style.backgroundColor = '';
-    root.style.background = '';
-    root.style.backdropFilter = '';
-  }
-}
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
@@ -50,18 +26,14 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('taksflow-theme', theme);
   }, [theme]);
 
-  const setWallpaper = useCallback((url: string | null) => {
+  const setWallpaper = (url: string | null) => {
     setWallpaperState(url);
     if (url) {
       localStorage.setItem('taksflow-wallpaper', url);
     } else {
       localStorage.removeItem('taksflow-wallpaper');
     }
-  }, []);
-
-  useEffect(() => {
-    applyWallpaper(wallpaper, theme);
-  }, [wallpaper, theme]);
+  };
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
