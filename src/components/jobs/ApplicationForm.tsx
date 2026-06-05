@@ -108,18 +108,19 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
       />
 
       {/* Modal */}
-      <Card className="relative z-10 w-full max-w-lg max-h-[90vh] overflow-y-auto p-6">
+      <Card className="relative z-10 w-full max-w-lg max-h-[85vh] overflow-y-auto p-4 sm:p-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
-              <Building2 size={20} />
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+              <Building2 size={16} className="sm:hidden" />
+              <Building2 size={20} className="hidden sm:block" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">
+              <h2 className="text-base sm:text-lg font-semibold text-white">
                 {isEdit ? 'Edit Lamaran' : 'Tambah Lamaran'}
               </h2>
-              <p className="text-xs text-dark-muted">
+              <p className="hidden sm:block text-xs text-dark-muted">
                 {isEdit ? 'Perbarui detail lamaran kerja' : 'Catat lamaran kerja baru'}
               </p>
             </div>
@@ -128,15 +129,15 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
             onClick={onClose}
             className="rounded-lg p-1.5 text-dark-muted transition-colors hover:bg-dark-hover hover:text-white"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
           {/* Company & Position */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-dark-muted">
+              <label className="mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
                 Company <span className="text-accent-pink">*</span>
               </label>
               <input
@@ -144,11 +145,11 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
                 placeholder="Nama perusahaan"
-                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2.5 text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-dark-muted">
+              <label className="mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
                 Position <span className="text-accent-pink">*</span>
               </label>
               <input
@@ -156,16 +157,17 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
                 placeholder="Posisi yang dilamar"
-                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2.5 text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
               />
             </div>
           </div>
 
           {/* Location & Salary Range */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-dark-muted">
-                <MapPin size={14} className="inline mr-1" />
+              <label className="mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
+                <MapPin size={12} className="inline mr-1 sm:hidden" />
+                <MapPin size={14} className="hidden sm:inline mr-1" />
                 Lokasi
               </label>
               <input
@@ -173,12 +175,13 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="Kota atau remote"
-                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2.5 text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-dark-muted">
-                <DollarSign size={14} className="inline mr-1" />
+              <label className="mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
+                <DollarSign size={12} className="inline mr-1 sm:hidden" />
+                <DollarSign size={14} className="hidden sm:inline mr-1" />
                 Rentang Gaji
               </label>
               <input
@@ -186,16 +189,17 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
                 value={salaryRange}
                 onChange={(e) => setSalaryRange(e.target.value)}
                 placeholder="Rp 5-10 juta"
-                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2.5 text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
               />
             </div>
           </div>
 
           {/* Job URL & Status */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-dark-muted">
-                <ExternalLink size={14} className="inline mr-1" />
+              <label className="mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
+                <ExternalLink size={12} className="inline mr-1 sm:hidden" />
+                <ExternalLink size={14} className="hidden sm:inline mr-1" />
                 URL Lowongan
               </label>
               <input
@@ -203,18 +207,19 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
                 value={jobUrl}
                 onChange={(e) => setJobUrl(e.target.value)}
                 placeholder="https://..."
-                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2.5 text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-dark-muted">
-                <Send size={14} className="inline mr-1" />
+              <label className="mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
+                <Send size={12} className="inline mr-1 sm:hidden" />
+                <Send size={14} className="hidden sm:inline mr-1" />
                 Status
               </label>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as ApplicationStatus)}
-                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2.5 text-sm text-white outline-none transition-colors focus:border-primary"
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 sm:py-2.5 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary"
               >
                 {statusOptions.map((s) => (
                   <option key={s} value={s}>
@@ -226,56 +231,59 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
           </div>
 
           {/* Applied Date & Interview Date */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-dark-muted">
-                <Calendar size={14} className="inline mr-1" />
+              <label className="mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
+                <Calendar size={12} className="inline mr-1 sm:hidden" />
+                <Calendar size={14} className="hidden sm:inline mr-1" />
                 Tanggal Lamar
               </label>
               <input
                 type="date"
                 value={appliedDate}
                 onChange={(e) => setAppliedDate(e.target.value)}
-                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2.5 text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 sm:py-2.5 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-dark-muted">
-                <Calendar size={14} className="inline mr-1" />
+              <label className="mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
+                <Calendar size={12} className="inline mr-1 sm:hidden" />
+                <Calendar size={14} className="hidden sm:inline mr-1" />
                 Tanggal Interview
               </label>
               <input
                 type="date"
                 value={interviewDate}
                 onChange={(e) => setInterviewDate(e.target.value)}
-                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2.5 text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 sm:py-2.5 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
               />
             </div>
           </div>
 
           {/* Offer Date & Response Received */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-dark-muted">
-                <Calendar size={14} className="inline mr-1" />
+              <label className="mb-1 block text-xs sm:text-sm font-medium text-dark-muted">
+                <Calendar size={12} className="inline mr-1 sm:hidden" />
+                <Calendar size={14} className="hidden sm:inline mr-1" />
                 Tanggal Offer
               </label>
               <input
                 type="date"
                 value={offerDate}
                 onChange={(e) => setOfferDate(e.target.value)}
-                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2.5 text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
+                className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 sm:py-2.5 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
               />
             </div>
-            <div className="flex items-end pb-2.5">
-              <label className="flex items-center gap-2.5 cursor-pointer">
+            <div className="flex items-end pb-1.5 sm:pb-2.5">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={responseReceived}
                   onChange={(e) => setResponseReceived(e.target.checked)}
                   className="h-4 w-4 rounded border-dark-border bg-dark-bg text-primary accent-primary outline-none focus:ring-1 focus:ring-primary"
                 />
-                <span className="text-sm font-medium text-dark-muted">
+                <span className="text-xs sm:text-sm font-medium text-dark-muted">
                   Respon Diterima
                 </span>
               </label>
@@ -284,35 +292,35 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
 
           {/* Notes */}
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-dark-muted">Catatan</label>
+            <label className="mb-1 block text-xs sm:text-sm font-medium text-dark-muted">Catatan</label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Catatan tambahan..."
-              rows={3}
-              className="w-full resize-none rounded-lg border border-dark-border bg-dark-bg px-3 py-2.5 text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
+              rows={2}
+              className="w-full resize-none rounded-lg border border-dark-border bg-dark-bg px-3 py-2 sm:py-2.5 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
             />
           </div>
 
           {/* Error */}
           {error && (
-            <p className="text-sm text-accent-pink">{error}</p>
+            <p className="text-xs sm:text-sm text-accent-pink">{error}</p>
           )}
 
           {/* Actions */}
-          <div className="flex items-center justify-end gap-3 pt-2">
+          <div className="flex items-center justify-end gap-2 sm:gap-3 pt-1 sm:pt-2">
             <button
               type="button"
               onClick={onClose}
               disabled={isPending}
-              className="rounded-lg border border-dark-border px-5 py-2.5 text-sm font-medium text-dark-muted transition-colors hover:bg-dark-hover hover:text-white disabled:opacity-50"
+              className="rounded-lg border border-dark-border px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-medium text-dark-muted transition-colors hover:bg-dark-hover hover:text-white disabled:opacity-50"
             >
               Batal
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-50"
+              className="rounded-lg bg-primary px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-50"
             >
               {isPending ? 'Menyimpan...' : isEdit ? 'Simpan Perubahan' : 'Tambah Lamaran'}
             </button>
