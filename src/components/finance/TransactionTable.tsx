@@ -125,13 +125,13 @@ export function TransactionTable({
                     {formatCurrency(tx.amount)}
                   </td>
                   <td className="px-3 py-2">
-                    <div className="flex items-center justify-center gap-0.5">
+                    <div className="flex items-center justify-center gap-1">
                       <button
                         onClick={() => onEdit(tx)}
-                        className="rounded-md p-1 text-dark-muted transition-colors hover:bg-dark-border hover:text-white"
+                        className="rounded-lg p-1.5 text-dark-muted transition-colors hover:bg-dark-border hover:text-white"
                         title="Edit"
                       >
-                        <Pencil size={13} />
+                        <Pencil size={16} />
                       </button>
                       <button
                         onClick={() => {
@@ -139,10 +139,10 @@ export function TransactionTable({
                             onDelete(tx.id);
                           }
                         }}
-                        className="rounded-md p-1 text-dark-muted transition-colors hover:bg-dark-border hover:text-accent-pink"
+                        className="rounded-lg p-1.5 text-dark-muted transition-colors hover:bg-dark-border hover:text-accent-pink"
                         title="Hapus"
                       >
-                        <Trash2 size={13} />
+                        <Trash2 size={16} />
                       </button>
                     </div>
                   </td>
