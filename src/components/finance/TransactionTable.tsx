@@ -94,10 +94,10 @@ export function TransactionTable({
             <thead>
               <tr className="border-b border-dark-border bg-dark-hover text-dark-muted">
                   <th className="px-3 py-2 text-xs font-medium">Tanggal</th>
-                <th className="px-3 py-2 text-xs font-medium">Deskripsi</th>
+                <th className="hidden px-3 py-2 text-xs font-medium sm:table-cell">Deskripsi</th>
                 <th className="px-3 py-2 text-xs font-medium">Kategori</th>
                 <th className="px-3 py-2 text-right text-xs font-medium">Jumlah</th>
-                <th className="sticky right-0 bg-dark-hover px-3 py-2 text-center text-xs font-medium">Aksi</th>
+                <th className="px-3 py-2 text-center text-xs font-medium">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -109,7 +109,7 @@ export function TransactionTable({
                   <td className="whitespace-nowrap px-3 py-2 text-xs text-white">
                     {formatDate(tx.date)}
                   </td>
-                  <td className="max-w-[100px] truncate px-3 py-2 text-xs text-white lg:max-w-none lg:overflow-visible lg:whitespace-normal">{tx.description}</td>
+                  <td className="hidden px-3 py-2 text-xs text-white sm:table-cell">{tx.description}</td>
                   <td className="px-3 py-2">
                     <Badge variant={tx.type === 'income' ? 'secondary' : 'pink'} className="text-[10px]">
                       {tx.category}
@@ -124,7 +124,7 @@ export function TransactionTable({
                     {tx.type === 'income' ? '+' : '-'}
                     {formatCurrency(tx.amount)}
                   </td>
-                  <td className="sticky right-0 bg-dark-card px-3 py-2">
+                  <td className="px-3 py-2">
                     <div className="flex items-center justify-center gap-1">
                       <button
                         onClick={() => onEdit(tx)}
