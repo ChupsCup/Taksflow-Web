@@ -109,7 +109,7 @@ export function TodoList({
             value={quickAddTitle}
             onChange={(e) => setQuickAddTitle(e.target.value)}
             placeholder="Tambah cepat... (Enter)"
-            className="w-full rounded-lg border border-dark-border bg-dark-card py-2.5 pl-10 pr-4 text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
+            className="w-full rounded-lg border border-dark-border bg-dark-card py-2.5 pl-10 pr-4 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
           />
         </div>
       </form>
@@ -122,7 +122,7 @@ export function TodoList({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Cari tugas berdasarkan judul..."
-          className="w-full rounded-lg border border-dark-border bg-dark-card py-2.5 pl-10 pr-4 text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
+          className="w-full rounded-lg border border-dark-border bg-dark-card py-2.5 pl-10 pr-4 text-base sm:text-sm text-white placeholder-dark-muted outline-none transition-colors focus:border-primary"
         />
       </div>
 
