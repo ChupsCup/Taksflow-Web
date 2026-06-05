@@ -97,7 +97,7 @@ export function TransactionTable({
                 <th className="hidden px-3 py-2 text-xs font-medium sm:table-cell">Deskripsi</th>
                 <th className="px-3 py-2 text-xs font-medium">Kategori</th>
                 <th className="px-3 py-2 text-right text-xs font-medium">Jumlah</th>
-                <th className="px-3 py-2 text-center text-xs font-medium">Aksi</th>
+                <th className="sticky right-0 z-[1] bg-dark-hover px-3 py-2 text-center text-xs font-medium">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -124,7 +124,7 @@ export function TransactionTable({
                     {tx.type === 'income' ? '+' : '-'}
                     {formatCurrency(tx.amount)}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-2">
+                  <td className="sticky right-0 z-[1] bg-dark-bg whitespace-nowrap px-3 py-2">
                     <div className="flex items-center justify-center gap-1.5">
                       <button
                         onClick={() => onEdit(tx)}

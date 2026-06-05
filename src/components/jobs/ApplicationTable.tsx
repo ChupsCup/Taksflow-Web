@@ -74,7 +74,7 @@ export function ApplicationTable({ onEdit }: ApplicationTableProps) {
             <th className="px-3 py-2 text-xs font-medium text-dark-muted">Status</th>
             <th className="hidden px-3 py-2 text-xs font-medium text-dark-muted sm:table-cell">Tanggal Lamar</th>
             <th className="hidden px-3 py-2 text-xs font-medium text-dark-muted sm:table-cell">Respon</th>
-            <th className="px-3 py-2 text-center text-xs font-medium text-dark-muted">Aksi</th>
+            <th className="sticky right-0 z-[1] bg-dark-hover px-3 py-2 text-center text-xs font-medium text-dark-muted">Aksi</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-dark-border">
@@ -100,7 +100,7 @@ export function ApplicationTable({ onEdit }: ApplicationTableProps) {
                   className="h-4 w-4 rounded border-dark-border bg-dark-bg text-primary accent-primary outline-none"
                 />
               </td>
-              <td className="whitespace-nowrap px-3 py-2">
+              <td className="sticky right-0 z-[1] bg-dark-bg whitespace-nowrap px-3 py-2">
                 <div className="flex items-center justify-center gap-1.5">
                   <button
                     onClick={() => onEdit(app)}
