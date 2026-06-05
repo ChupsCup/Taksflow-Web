@@ -23,14 +23,11 @@ export function AppLayout() {
 
   return (
     <div
-      className={cn(
-        'relative flex min-h-screen min-h-[100dvh] flex-col',
-        wallpaper ? 'bg-transparent' : 'bg-dark-bg'
-      )}
+      className={cn('flex min-h-screen min-h-[100dvh] flex-col', wallpaper ? 'bg-dark-bg/40' : 'bg-dark-bg')}
       style={
         wallpaper
           ? {
-              backgroundImage: `url(${wallpaper})`,
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${wallpaper})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundAttachment: 'fixed',
@@ -38,11 +35,8 @@ export function AppLayout() {
           : undefined
       }
     >
-      {wallpaper && <div className="fixed inset-0 z-[1] bg-dark-bg/40 backdrop-blur-sm" />}
-      <div className="relative z-10">
-        <Sidebar />
-      </div>
-      <main className="relative z-10 flex-1 lg:pb-16">
+      <Sidebar />
+      <main className="min-w-0 flex-1 lg:pb-16">
         <div className="mx-auto w-full max-w-6xl px-4 py-6 pb-24 lg:pb-6">
           <Outlet />
         </div>
