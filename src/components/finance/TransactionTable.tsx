@@ -124,14 +124,14 @@ export function TransactionTable({
                     {tx.type === 'income' ? '+' : '-'}
                     {formatCurrency(tx.amount)}
                   </td>
-                  <td className="px-3 py-2">
-                    <div className="flex items-center justify-center gap-1">
+                  <td className="whitespace-nowrap px-3 py-2">
+                    <div className="flex items-center justify-center gap-1.5">
                       <button
                         onClick={() => onEdit(tx)}
-                        className="rounded-lg p-1.5 text-dark-muted transition-colors hover:bg-dark-border hover:text-white"
+                        className="rounded-lg p-2 text-dark-muted transition-colors hover:bg-dark-border hover:text-white"
                         title="Edit"
                       >
-                        <Pencil size={16} />
+                        <Pencil size={20} />
                       </button>
                       <button
                         onClick={() => {
@@ -139,10 +139,10 @@ export function TransactionTable({
                             onDelete(tx.id);
                           }
                         }}
-                        className="rounded-lg p-1.5 text-dark-muted transition-colors hover:bg-dark-border hover:text-accent-pink"
+                        className="rounded-lg p-2 text-dark-muted transition-colors hover:bg-dark-border hover:text-accent-pink"
                         title="Hapus"
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={20} />
                       </button>
                     </div>
                   </td>
