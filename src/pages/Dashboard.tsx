@@ -1,12 +1,12 @@
-import { Wallet, Briefcase, CheckSquare, TrendingUp, TrendingDown, Calendar } from 'lucide-react';
+import { Wallet, Briefcase, CheckSquare, TrendingUp, TrendingDown, Calendar, LogOut } from 'lucide-react';
 import { Card } from '../components/ui/Card';
 import { StatCard } from '../components/ui/StatCard';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { useTransactions } from '../hooks/useTransactions';
 import { useJobsStats } from '../hooks/useJobApplications';
 import { useTodosStats } from '../hooks/useTodos';
-import { formatCurrency } from '../lib/utils';
-import { getMonthRange } from '../lib/utils';
+import { formatCurrency, getMonthRange } from '../lib/utils';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Dashboard() {
   const { start, end } = getMonthRange();
@@ -18,6 +18,7 @@ export default function Dashboard() {
   const expense = transactions?.filter((t) => t.type === 'expense').reduce((a, b) => a + b.amount, 0) ?? 0;
   const balance = income - expense;
 
+  const { signOut } = useAuth();
   const isLoading = txLoading || jobsLoading || todoLoading;
 
   if (isLoading) {
@@ -31,9 +32,16 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
+      <div className="relative">
         <h1 className="text-2xl font-bold text-white">Dashboard</h1>
         <p className="mt-1 text-sm text-dark-muted">Ringkasan aktivitas bulan ini</p>
+        <button
+          onClick={signOut}
+          className="absolute right-0 top-0 rounded-lg p-2 text-dark-muted transition-colors hover:bg-dark-hover hover:text-accent-pink"
+          title="Keluar"
+        >
+          <LogOut size={20} />
+        </button>
       </div>
 
       {/* Stats Grid */}

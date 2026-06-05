@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Wallet, Briefcase, CheckSquare, LogOut } from 'lucide-react';
+import { LayoutDashboard, Wallet, Briefcase, CheckSquare } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import { useAuth } from '../../contexts/AuthContext';
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
@@ -11,37 +10,29 @@ const navItems = [
 ];
 
 export function Sidebar() {
-  const { signOut } = useAuth();
-
   return (
     <>
       {/* Desktop Bottom Navbar */}
-      <nav className="hidden lg:flex fixed bottom-0 left-0 right-0 z-40 items-center justify-center gap-1 border-t border-dark-border bg-dark-card/80 px-6 py-2 backdrop-blur-xl">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.to === '/'}
-            className={({ isActive }) =>
-              cn(
-                'flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors',
-                isActive
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-dark-muted hover:bg-dark-hover hover:text-white'
-              )
-            }
-          >
-            <item.icon size={18} />
-            {item.label}
-          </NavLink>
-        ))}
-        <button
-          onClick={signOut}
-          className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-dark-muted transition-colors hover:bg-dark-hover hover:text-accent-pink"
-        >
-          <LogOut size={16} />
-          Keluar
-        </button>
+      <nav className="hidden lg:flex fixed bottom-5 left-1/2 z-40 -translate-x-1/2">
+        <div className="flex items-center gap-0.5 rounded-full border border-dark-border/50 bg-dark-card/70 px-2 py-1.5 shadow-xl backdrop-blur-xl">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              className={({ isActive }) =>
+                cn(
+                  'flex items-center justify-center rounded-lg p-2 transition-colors',
+                  isActive
+                    ? 'bg-primary/15 text-primary'
+                    : 'text-dark-muted hover:text-white'
+                )
+              }
+            >
+              <item.icon size={20} />
+            </NavLink>
+          ))}
+        </div>
       </nav>
 
       {/* Mobile Floating Bottom Nav */}
