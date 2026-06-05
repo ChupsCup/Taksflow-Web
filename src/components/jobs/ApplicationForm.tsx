@@ -264,18 +264,18 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
                     </select>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-1.5">
+                <div className="space-y-1.5">
                   <div>
-                    <label className="mb-px block text-[10px] font-medium text-dark-muted">Lamar</label>
-                    <input type="date" value={appliedDate} onChange={(e) => setAppliedDate(e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-1.5 py-1 text-[10px] text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
+                    <label className="mb-px block text-[10px] font-medium text-dark-muted">Tanggal Lamar</label>
+                    <input type="date" value={appliedDate} onChange={(e) => setAppliedDate(e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
                   </div>
                   <div>
-                    <label className="mb-px block text-[10px] font-medium text-dark-muted">Interview</label>
-                    <input type="date" value={interviewDate} onChange={(e) => setInterviewDate(e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-1.5 py-1 text-[10px] text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
+                    <label className="mb-px block text-[10px] font-medium text-dark-muted">Tanggal Interview</label>
+                    <input type="date" value={interviewDate} onChange={(e) => setInterviewDate(e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
                   </div>
                   <div>
-                    <label className="mb-px block text-[10px] font-medium text-dark-muted">Offer</label>
-                    <input type="date" value={offerDate} onChange={(e) => setOfferDate(e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-1.5 py-1 text-[10px] text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
+                    <label className="mb-px block text-[10px] font-medium text-dark-muted">Tanggal Offer</label>
+                    <input type="date" value={offerDate} onChange={(e) => setOfferDate(e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
                   </div>
                 </div>
                 <div className="flex items-center gap-2">

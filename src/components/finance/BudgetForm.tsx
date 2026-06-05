@@ -73,7 +73,7 @@ export function BudgetForm({ isOpen, onClose, onSubmit, existingCategory }: Budg
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Category */}
           <div>
-            <label className="mb-1.5 block text-sm text-dark-muted">Kategori</label>
+            <label className="mb-1.5 block text-xs sm:text-sm text-dark-muted">Kategori</label>
             <CategorySelect
               categories={expenseCategories}
               value={category}
@@ -85,7 +85,7 @@ export function BudgetForm({ isOpen, onClose, onSubmit, existingCategory }: Budg
 
           {/* Amount */}
           <div>
-            <label className="mb-1.5 block text-sm text-dark-muted">Batas Budget (Rp)</label>
+            <label className="mb-1.5 block text-xs sm:text-sm text-dark-muted">Batas Budget (Rp)</label>
             <input
               type="text"
               inputMode="numeric"
@@ -97,17 +97,17 @@ export function BudgetForm({ isOpen, onClose, onSubmit, existingCategory }: Budg
               }}
               placeholder="0"
               required
-              className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 text-sm text-white outline-none transition-colors focus:border-primary"
+              className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary"
             />
           </div>
 
           {/* Period */}
           <div>
-            <label className="mb-1.5 block text-sm text-dark-muted">Periode</label>
+            <label className="mb-1.5 block text-xs sm:text-sm text-dark-muted">Periode</label>
             <select
               value={period}
               onChange={(e) => setPeriod(e.target.value as 'monthly' | 'yearly')}
-              className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 text-sm text-white outline-none transition-colors focus:border-primary"
+              className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary"
             >
               <option value="monthly">Bulanan</option>
               <option value="yearly">Tahunan</option>
@@ -117,7 +117,7 @@ export function BudgetForm({ isOpen, onClose, onSubmit, existingCategory }: Budg
           {/* Submit */}
           <button
             type="submit"
-            className="w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
+            className="w-full rounded-lg bg-primary px-4 py-2.5 text-base sm:text-sm font-medium text-white transition-colors hover:bg-primary-dark"
           >
             Simpan Budget
           </button>

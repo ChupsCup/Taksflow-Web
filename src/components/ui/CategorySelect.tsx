@@ -103,7 +103,7 @@ export function CategorySelect({
           placeholder="Ketik kategori baru"
           required={required}
           autoFocus
-          className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 text-sm text-white outline-none transition-colors focus:border-primary"
+          className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary"
         />
         <button
           type="button"
@@ -133,7 +133,7 @@ export function CategorySelect({
         type="button"
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className={cn(
-          'flex w-full items-center justify-between rounded-lg border bg-dark-bg px-3 py-2 text-sm outline-none transition-colors focus:border-primary',
+          'flex w-full items-center justify-between rounded-lg border bg-dark-bg px-3 py-2 text-base sm:text-sm outline-none transition-colors focus:border-primary',
           value
             ? 'border-dark-border text-white'
             : 'border-dark-border text-dark-muted'
