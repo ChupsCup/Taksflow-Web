@@ -61,12 +61,29 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
 
   useEffect(() => {
     if (open) {
-      document.body.style.overflow = 'hidden';
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.width = '100%';
+      document.body.style.overflowY = 'scroll';
     } else {
-      document.body.style.overflow = '';
+      const top = parseInt(document.body.style.top || '0', 10);
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.width = '';
+      document.body.style.overflowY = '';
+      window.scrollTo(0, -top);
     }
     return () => {
-      document.body.style.overflow = '';
+      const top = parseInt(document.body.style.top || '0', 10);
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.width = '';
+      document.body.style.overflowY = '';
+      window.scrollTo(0, -top);
     };
   }, [open]);
 
@@ -111,9 +128,9 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
-      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/60 touch-none" onClick={onClose} />
 
-      <div className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-xl border border-dark-border bg-dark-card sm:p-6 overflow-x-hidden">
+      <div className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-xl border border-dark-border bg-dark-card sm:p-6 overflow-x-hidden overscroll-contain">
         <div className="p-3 sm:p-0">
           <div className="flex items-center justify-between mb-3 sm:mb-6">
             <div className="flex items-center gap-2 sm:gap-3">
