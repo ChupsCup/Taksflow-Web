@@ -211,80 +211,76 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
         </div>
       </div>
 
-      {/* Mobile: bottom sheet */}
+      {/* Mobile: compact bottom sheet */}
       <div className="block sm:hidden">
         <div className="fixed inset-0 z-50 bg-black/60 touch-none" onClick={onClose} />
-        <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col max-h-[85vh] rounded-t-2xl border border-dark-border bg-dark-card overscroll-contain">
-          <div className="shrink-0 flex items-center justify-between p-3 border-b border-dark-border">
-            <h2 className="text-sm font-semibold text-white">
-              {isEdit ? 'Edit Lamaran' : 'Tambah Lamaran'}
-            </h2>
-            <button onClick={onClose} className="rounded-lg p-1 text-dark-muted transition-colors hover:bg-dark-hover hover:text-white">
-              <X size={16} />
+        <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col rounded-t-2xl border border-dark-border bg-dark-card overscroll-contain">
+          <div className="flex items-center justify-between px-3 py-2 border-b border-dark-border">
+            <span className="text-xs font-semibold text-white">{isEdit ? 'Edit Lamaran' : 'Tambah Lamaran'}</span>
+            <button onClick={onClose} className="rounded p-0.5 text-dark-muted hover:text-white">
+              <X size={14} />
             </button>
           </div>
-          <div className="overflow-y-auto overscroll-contain p-3">
-            <form onSubmit={handleSubmit} className="space-y-3">
+          <div className="overflow-y-auto overscroll-contain px-3 pt-2 pb-3">
+            <form onSubmit={handleSubmit} className="space-y-1.5">
               <div>
-                <label className="mb-0.5 block text-xs font-medium text-dark-muted">Company <span className="text-accent-pink">*</span></label>
-                <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Nama perusahaan" className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
+                <label className="mb-px block text-[10px] font-medium text-dark-muted">Perusahaan <span className="text-accent-pink">*</span></label>
+                <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Nama" className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
               </div>
               <div>
-                <label className="mb-0.5 block text-xs font-medium text-dark-muted">Position <span className="text-accent-pink">*</span></label>
-                <input type="text" value={position} onChange={(e) => setPosition(e.target.value)} placeholder="Posisi yang dilamar" className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
+                <label className="mb-px block text-[10px] font-medium text-dark-muted">Posisi <span className="text-accent-pink">*</span></label>
+                <input type="text" value={position} onChange={(e) => setPosition(e.target.value)} placeholder="Posisi" className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-1.5">
                 <div>
-                  <label className="mb-0.5 block text-xs font-medium text-dark-muted"><MapPin size={12} className="inline mr-1" />Lokasi</label>
-                  <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Kota" className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
+                  <label className="mb-px block text-[10px] font-medium text-dark-muted">Lokasi</label>
+                  <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Kota" className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
                 </div>
                 <div>
-                  <label className="mb-0.5 block text-xs font-medium text-dark-muted"><DollarSign size={12} className="inline mr-1" />Gaji</label>
-                  <input type="text" value={salaryRange} onChange={(e) => setSalaryRange(e.target.value)} placeholder="Rp" className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
+                  <label className="mb-px block text-[10px] font-medium text-dark-muted">Gaji</label>
+                  <input type="text" value={salaryRange} onChange={(e) => setSalaryRange(e.target.value)} placeholder="Rp" className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-1.5">
                 <div>
-                  <label className="mb-0.5 block text-xs font-medium text-dark-muted">URL</label>
-                  <input type="url" value={jobUrl} onChange={(e) => setJobUrl(e.target.value)} placeholder="https://..." className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
+                  <label className="mb-px block text-[10px] font-medium text-dark-muted">URL</label>
+                  <input type="url" value={jobUrl} onChange={(e) => setJobUrl(e.target.value)} placeholder="https://" className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
                 </div>
                 <div>
-                  <label className="mb-0.5 block text-xs font-medium text-dark-muted">Status</label>
-                  <select value={status} onChange={(e) => setStatus(e.target.value as ApplicationStatus)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-base text-white outline-none transition-colors focus:border-primary">
+                  <label className="mb-px block text-[10px] font-medium text-dark-muted">Status</label>
+                  <select value={status} onChange={(e) => setStatus(e.target.value as ApplicationStatus)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white outline-none transition-colors focus:border-primary">
                     {statusOptions.map((s) => (<option key={s} value={s}>{APPLICATION_STATUS_LABELS[s]}</option>))}
                   </select>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-3 gap-1.5">
                 <div>
-                  <label className="mb-0.5 block text-xs font-medium text-dark-muted">Tgl Lamar</label>
-                  <input type="date" value={appliedDate} onChange={(e) => setAppliedDate(e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
+                  <label className="mb-px block text-[10px] font-medium text-dark-muted">Lamar</label>
+                  <input type="date" value={appliedDate} onChange={(e) => setAppliedDate(e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-1.5 py-1 text-[10px] text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
                 </div>
                 <div>
-                  <label className="mb-0.5 block text-xs font-medium text-dark-muted">Tgl Interview</label>
-                  <input type="date" value={interviewDate} onChange={(e) => setInterviewDate(e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
+                  <label className="mb-px block text-[10px] font-medium text-dark-muted">Interview</label>
+                  <input type="date" value={interviewDate} onChange={(e) => setInterviewDate(e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-1.5 py-1 text-[10px] text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
+                </div>
+                <div>
+                  <label className="mb-px block text-[10px] font-medium text-dark-muted">Offer</label>
+                  <input type="date" value={offerDate} onChange={(e) => setOfferDate(e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-1.5 py-1 text-[10px] text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="mb-0.5 block text-xs font-medium text-dark-muted">Tgl Offer</label>
-                  <input type="date" value={offerDate} onChange={(e) => setOfferDate(e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
-                </div>
-                <div className="flex items-end pb-1">
-                  <label className="flex items-center gap-1.5 cursor-pointer">
-                    <input type="checkbox" checked={responseReceived} onChange={(e) => setResponseReceived(e.target.checked)} className="h-4 w-4 rounded border-dark-border bg-dark-bg text-primary accent-primary" />
-                    <span className="text-xs font-medium text-dark-muted">Respon</span>
-                  </label>
-                </div>
+              <div className="flex items-center gap-2">
+                <label className="flex items-center gap-1 cursor-pointer">
+                  <input type="checkbox" checked={responseReceived} onChange={(e) => setResponseReceived(e.target.checked)} className="h-3 w-3 rounded border-dark-border bg-dark-bg text-primary accent-primary" />
+                  <span className="text-[10px] font-medium text-dark-muted">Respon</span>
+                </label>
               </div>
               <div>
-                <label className="mb-0.5 block text-xs font-medium text-dark-muted">Catatan</label>
-                <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Catatan..." rows={2} className="w-full resize-none rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
+                <label className="mb-px block text-[10px] font-medium text-dark-muted">Catatan</label>
+                <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Catatan" rows={1} className="w-full resize-none rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
               </div>
-              {error && <p className="text-xs text-accent-pink">{error}</p>}
-              <div className="flex items-center justify-end gap-2">
-                <button type="button" onClick={onClose} disabled={isPending} className="rounded-lg border border-dark-border px-3.5 py-1.5 text-xs font-medium text-dark-muted transition-colors hover:bg-dark-hover hover:text-white disabled:opacity-50">Batal</button>
-                <button type="submit" disabled={isPending} className="rounded-lg bg-primary px-3.5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-50">
+              {error && <p className="text-[10px] text-accent-pink">{error}</p>}
+              <div className="flex items-center justify-end gap-1.5 pt-0.5">
+                <button type="button" onClick={onClose} disabled={isPending} className="rounded-lg border border-dark-border px-3 py-1 text-[10px] font-medium text-dark-muted transition-colors hover:bg-dark-hover hover:text-white disabled:opacity-50">Batal</button>
+                <button type="submit" disabled={isPending} className="rounded-lg bg-primary px-3 py-1 text-[10px] font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-50">
                   {isPending ? 'Menyimpan...' : isEdit ? 'Simpan' : 'Tambah'}
                 </button>
               </div>

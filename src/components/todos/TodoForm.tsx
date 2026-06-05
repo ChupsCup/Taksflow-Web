@@ -144,61 +144,59 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
         </div>
       </div>
 
-      {/* Mobile: bottom sheet */}
+      {/* Mobile: compact bottom sheet */}
       <div className="block sm:hidden">
         <div className="fixed inset-0 z-50 bg-black/60 touch-none" onClick={onClose} />
-        <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col max-h-[85vh] rounded-t-2xl border border-dark-border bg-dark-card overscroll-contain">
-          <div className="shrink-0 flex items-center justify-between p-3 border-b border-dark-border">
-            <h2 className="text-sm font-semibold text-white">
-              {initialData ? 'Edit Tugas' : 'Tugas Baru'}
-            </h2>
-            <button onClick={onClose} className="rounded-lg p-1 text-dark-muted transition-colors hover:bg-dark-hover hover:text-white">
-              <X size={16} />
+        <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col rounded-t-2xl border border-dark-border bg-dark-card overscroll-contain">
+          <div className="flex items-center justify-between px-3 py-2 border-b border-dark-border">
+            <span className="text-xs font-semibold text-white">{initialData ? 'Edit Tugas' : 'Tugas Baru'}</span>
+            <button onClick={onClose} className="rounded p-0.5 text-dark-muted hover:text-white">
+              <X size={14} />
             </button>
           </div>
-          <div className="overflow-y-auto overscroll-contain p-3">
-            <form onSubmit={handleSubmit} className="space-y-3">
+          <div className="overflow-y-auto overscroll-contain px-3 pt-2 pb-3">
+            <form onSubmit={handleSubmit} className="space-y-1.5">
               <div>
-                <label className="mb-0.5 block text-xs font-medium text-dark-muted">Judul <span className="text-red-400">*</span></label>
-                <input type="text" value={form.title} onChange={(e) => update('title', e.target.value)} placeholder="Apa yang perlu dilakukan?" className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" autoFocus required />
+                <label className="mb-px block text-[10px] font-medium text-dark-muted">Judul <span className="text-red-400">*</span></label>
+                <input type="text" value={form.title} onChange={(e) => update('title', e.target.value)} placeholder="Apa yang perlu dilakukan?" className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" autoFocus required />
               </div>
               <div>
-                <label className="mb-0.5 block text-xs font-medium text-dark-muted">Deskripsi</label>
-                <textarea value={form.description} onChange={(e) => update('description', e.target.value)} placeholder="Tambahkan detail..." rows={2} className="w-full resize-none rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
+                <label className="mb-px block text-[10px] font-medium text-dark-muted">Deskripsi</label>
+                <textarea value={form.description} onChange={(e) => update('description', e.target.value)} placeholder="Tambahkan detail..." rows={1} className="w-full resize-none rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white placeholder-dark-muted outline-none transition-colors focus:border-primary" />
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-1.5">
                 <div>
-                  <label className="mb-0.5 block text-xs font-medium text-dark-muted">Kategori</label>
-                  <select value={form.category} onChange={(e) => update('category', e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-base text-white outline-none transition-colors focus:border-primary">
+                  <label className="mb-px block text-[10px] font-medium text-dark-muted">Kategori</label>
+                  <select value={form.category} onChange={(e) => update('category', e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white outline-none transition-colors focus:border-primary">
                     {categories.map((cat) => (<option key={cat} value={cat}>{cat}</option>))}
                   </select>
                 </div>
                 <div>
-                  <label className="mb-0.5 block text-xs font-medium text-dark-muted">Prioritas</label>
-                  <select value={form.priority} onChange={(e) => update('priority', e.target.value as TodoPriority)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-base text-white outline-none transition-colors focus:border-primary">
+                  <label className="mb-px block text-[10px] font-medium text-dark-muted">Prioritas</label>
+                  <select value={form.priority} onChange={(e) => update('priority', e.target.value as TodoPriority)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white outline-none transition-colors focus:border-primary">
                     <option value="low">Rendah</option>
                     <option value="medium">Sedang</option>
                     <option value="high">Tinggi</option>
                   </select>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-1.5">
                 <div>
-                  <label className="mb-0.5 block text-xs font-medium text-dark-muted">Tenggat</label>
-                  <input type="date" value={form.due_date} onChange={(e) => update('due_date', e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
+                  <label className="mb-px block text-[10px] font-medium text-dark-muted">Tenggat</label>
+                  <input type="date" value={form.due_date} onChange={(e) => update('due_date', e.target.value)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-xs text-white outline-none transition-colors focus:border-primary [color-scheme:dark]" />
                 </div>
                 <div>
-                  <label className="mb-0.5 block text-xs font-medium text-dark-muted">Status</label>
-                  <select value={form.status} onChange={(e) => update('status', e.target.value as TodoStatus)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-base text-white outline-none transition-colors focus:border-primary">
+                  <label className="mb-px block text-[10px] font-medium text-dark-muted">Status</label>
+                  <select value={form.status} onChange={(e) => update('status', e.target.value as TodoStatus)} className="w-full rounded-lg border border-dark-border bg-dark-bg px-2.5 py-1 text-base text-white outline-none transition-colors focus:border-primary">
                     <option value="pending">Menunggu</option>
                     <option value="in_progress">Diproses</option>
                     <option value="done">Selesai</option>
                   </select>
                 </div>
               </div>
-              <div className="flex justify-end gap-2">
-                <button type="button" onClick={onClose} className="rounded-lg border border-dark-border px-3.5 py-1.5 text-xs font-medium text-dark-muted transition-colors hover:bg-dark-hover hover:text-white">Batal</button>
-                <button type="submit" disabled={isSubmitting || !form.title.trim()} className="rounded-lg bg-primary px-3.5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary/80 disabled:cursor-not-allowed disabled:opacity-50">
+              <div className="flex justify-end gap-1.5 pt-0.5">
+                <button type="button" onClick={onClose} className="rounded-lg border border-dark-border px-3 py-1 text-[10px] font-medium text-dark-muted transition-colors hover:bg-dark-hover hover:text-white">Batal</button>
+                <button type="submit" disabled={isSubmitting || !form.title.trim()} className="rounded-lg bg-primary px-3 py-1 text-[10px] font-medium text-white transition-colors hover:bg-primary/80 disabled:cursor-not-allowed disabled:opacity-50">
                   {isSubmitting ? 'Menyimpan...' : initialData ? 'Perbarui' : 'Tambah'}
                 </button>
               </div>
