@@ -16,7 +16,7 @@ export function Card({ children, className, onClick, onMouseEnter, onMouseLeave 
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       className={cn(
-        'rounded-xl border border-dark-border bg-dark-card p-4',
+        'rounded-xl border border-dark-border/50 bg-dark-card/60 p-4 backdrop-blur-xl',
         onClick && 'cursor-pointer transition-colors hover:border-dark-hover',
         className
       )}
