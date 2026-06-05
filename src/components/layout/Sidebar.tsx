@@ -15,36 +15,26 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Desktop Top Navbar */}
-      <nav className="hidden lg:flex fixed top-0 left-0 right-0 z-40 items-center justify-between border-b border-dark-border bg-dark-card/80 px-6 py-0 backdrop-blur-xl">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white">
-            TF
-          </div>
-          <span className="text-sm font-semibold text-white">TaskFlow</span>
-        </div>
-
-        <div className="flex items-center gap-1">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === '/'}
-              className={({ isActive }) =>
-                cn(
-                  'flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors',
-                  isActive
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-dark-muted hover:bg-dark-hover hover:text-white'
-                )
-              }
-            >
-              <item.icon size={18} />
-              {item.label}
-            </NavLink>
-          ))}
-        </div>
-
+      {/* Desktop Bottom Navbar */}
+      <nav className="hidden lg:flex fixed bottom-0 left-0 right-0 z-40 items-center justify-center gap-1 border-t border-dark-border bg-dark-card/80 px-6 py-2 backdrop-blur-xl">
+        {navItems.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.to === '/'}
+            className={({ isActive }) =>
+              cn(
+                'flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors',
+                isActive
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-dark-muted hover:bg-dark-hover hover:text-white'
+              )
+            }
+          >
+            <item.icon size={18} />
+            {item.label}
+          </NavLink>
+        ))}
         <button
           onClick={signOut}
           className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-dark-muted transition-colors hover:bg-dark-hover hover:text-accent-pink"
