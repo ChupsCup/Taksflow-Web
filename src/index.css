@@ -46,27 +46,6 @@
   --c-text-primary: #1a1a2e;
 }
 
-html.has-wallpaper {
-  --c-wallpaper: var(--bg-image);
-}
-
-html.has-wallpaper body {
-  background-image: var(--bg-image);
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-color: transparent;
-}
-
-html.has-wallpaper #root {
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
-}
-
-[data-theme="light"] html.has-wallpaper #root {
-  background: rgba(255, 255, 255, 0.5);
-}
-
 body {
   margin: 0;
   background-color: var(--c-dark-bg);
