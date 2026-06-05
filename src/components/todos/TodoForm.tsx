@@ -128,7 +128,7 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
             </div>
 
             {/* Category & Priority Row */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
               <div>
                 <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">Kategori</label>
                 <select
@@ -159,14 +159,14 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
             </div>
 
             {/* Due Date & Status Row */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
               <div>
                 <label className="mb-0.5 sm:mb-1 block text-xs sm:text-sm font-medium text-dark-muted">Tenggat</label>
                 <input
                   type="date"
                   value={form.due_date}
                   onChange={(e) => update('due_date', e.target.value)}
-                  className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
+                  className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 sm:py-2.5 text-sm text-white outline-none transition-colors focus:border-primary [color-scheme:dark]"
                 />
               </div>
 
