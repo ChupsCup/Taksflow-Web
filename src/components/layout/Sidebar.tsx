@@ -64,7 +64,7 @@ export function Sidebar() {
 
       {/* Mobile Floating Bottom Nav */}
       <nav className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2 lg:hidden">
-        <div className="flex items-center gap-0.5 rounded-full border border-dark-border/50 bg-dark-card/70 px-2 py-1 shadow-xl backdrop-blur-xl">
+        <div className="flex items-center gap-0.5 rounded-full border border-dark-border/50 bg-dark-card/70 px-2 py-1.5 shadow-xl backdrop-blur-xl">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -72,15 +72,14 @@ export function Sidebar() {
               end={item.to === '/'}
               className={({ isActive }) =>
                 cn(
-                  'flex flex-col items-center gap-0 rounded-lg px-2.5 py-1 text-[9px] font-medium transition-colors min-w-[50px]',
+                  'flex items-center justify-center rounded-lg p-2 transition-colors',
                   isActive
                     ? 'bg-primary/15 text-primary'
                     : 'text-dark-muted hover:text-white'
                 )
               }
             >
-              <item.icon size={16} />
-              <span className="leading-snug">{item.label}</span>
+              <item.icon size={20} />
             </NavLink>
           ))}
         </div>
