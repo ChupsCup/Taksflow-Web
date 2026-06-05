@@ -19,7 +19,7 @@ export function StatCard({ title, value, icon: Icon, trend, className, iconColor
         <Icon size={18} className="hidden sm:block" />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-xs text-dark-muted">{title}</p>
+        <p className="text-[10px] text-dark-muted sm:text-xs">{title}</p>
         <p className="mt-0.5 text-sm font-semibold text-white sm:text-lg">{value}</p>
         {trend && (
           <p className={cn('mt-0.5 text-xs', trend.positive ? 'text-secondary' : 'text-accent-pink')}>
