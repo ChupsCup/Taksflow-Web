@@ -66,33 +66,33 @@ export function ApplicationTable({ onEdit }: ApplicationTableProps) {
 
   return (
     <div className="overflow-x-auto rounded-xl border border-dark-border">
-      <table className="w-full min-w-[700px] text-left text-sm">
+      <table className="w-full text-left text-sm">
         <thead>
           <tr className="border-b border-dark-border bg-dark-hover">
-            <th className="px-4 py-3 font-medium text-dark-muted">Company</th>
-            <th className="px-4 py-3 font-medium text-dark-muted">Posisi</th>
-            <th className="px-4 py-3 font-medium text-dark-muted">Status</th>
-            <th className="px-4 py-3 font-medium text-dark-muted">Tanggal Lamar</th>
-            <th className="px-4 py-3 font-medium text-dark-muted">Respon</th>
-            <th className="px-4 py-3 font-medium text-dark-muted">Aksi</th>
+            <th className="px-3 py-2 text-xs font-medium text-dark-muted">Company</th>
+            <th className="px-3 py-2 text-xs font-medium text-dark-muted">Posisi</th>
+            <th className="px-3 py-2 text-xs font-medium text-dark-muted">Status</th>
+            <th className="hidden px-3 py-2 text-xs font-medium text-dark-muted sm:table-cell">Tanggal Lamar</th>
+            <th className="hidden px-3 py-2 text-xs font-medium text-dark-muted sm:table-cell">Respon</th>
+            <th className="px-3 py-2 text-center text-xs font-medium text-dark-muted">Aksi</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-dark-border">
           {applications.map((app) => (
             <tr key={app.id} className="bg-dark-card transition-colors hover:bg-dark-hover">
-              <td className="px-4 py-3">
-                <p className="font-medium text-white">{app.company}</p>
+              <td className="px-3 py-2">
+                <p className="max-w-[100px] truncate text-xs font-medium text-white lg:max-w-none lg:overflow-visible lg:whitespace-normal">{app.company}</p>
               </td>
-              <td className="px-4 py-3 text-dark-muted">{app.position}</td>
-              <td className="px-4 py-3">
-                <Badge variant={statusVariant[app.status]}>
+              <td className="max-w-[100px] truncate px-3 py-2 text-xs text-dark-muted lg:max-w-none lg:overflow-visible lg:whitespace-normal">{app.position}</td>
+              <td className="px-3 py-2">
+                <Badge variant={statusVariant[app.status]} className="text-[10px]">
                   {APPLICATION_STATUS_LABELS[app.status]}
                 </Badge>
               </td>
-              <td className="px-4 py-3 text-dark-muted">
+              <td className="hidden px-3 py-2 text-xs text-dark-muted sm:table-cell">
                 {formatDate(app.applied_date)}
               </td>
-              <td className="px-4 py-3">
+              <td className="hidden px-3 py-2 sm:table-cell">
                 <input
                   type="checkbox"
                   checked={app.response_received}
@@ -100,8 +100,8 @@ export function ApplicationTable({ onEdit }: ApplicationTableProps) {
                   className="h-4 w-4 rounded border-dark-border bg-dark-bg text-primary accent-primary outline-none"
                 />
               </td>
-              <td className="px-4 py-3">
-                <div className="flex items-center gap-1">
+              <td className="px-3 py-2">
+                <div className="flex items-center justify-center gap-1">
                   <button
                     onClick={() => onEdit(app)}
                     className="rounded-lg p-1.5 text-dark-muted transition-colors hover:bg-dark-hover hover:text-primary"
