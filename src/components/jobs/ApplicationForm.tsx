@@ -97,18 +97,32 @@ export function ApplicationForm({ open, onClose, application }: ApplicationFormP
     }
   };
 
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
+  }, [open]);
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-50 flex sm:items-center sm:justify-center sm:p-4">
+      {/* Backdrop (desktop only) */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="hidden sm:block absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      {/* Modal */}
-      <Card className="relative z-10 w-full max-w-lg max-h-[85vh] overflow-y-auto p-4 sm:p-6">
+      {/* Modal: full-screen on mobile, centered card on desktop */}
+      <Card className="relative z-10 flex flex-col w-full min-h-dvh sm:min-h-0 sm:h-auto sm:max-w-lg sm:max-h-[85vh] rounded-none sm:rounded-xl border-0 sm:border sm:border-dark-border p-4 sm:p-6 overflow-x-hidden overflow-y-auto overscroll-contain">
         {/* Header */}
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div className="flex items-center gap-2 sm:gap-3">
