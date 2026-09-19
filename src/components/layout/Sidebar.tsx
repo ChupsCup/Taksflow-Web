@@ -16,8 +16,8 @@ function NavPill({ isDesktop }: { isDesktop: boolean }) {
 
   return (
     <>
-      <nav className={`fixed bottom-5 left-1/2 z-40 -translate-x-1/2 ${isDesktop ? 'hidden lg:flex' : 'lg:hidden'}`}>
-        <div className="flex items-center gap-0.5 rounded-full border border-dark-border/50 bg-dark-card/70 px-2 py-1.5 shadow-xl backdrop-blur-xl">
+      <nav className={`pointer-events-none fixed inset-x-0 bottom-5 z-40 flex justify-center ${isDesktop ? 'hidden lg:flex' : 'lg:hidden'}`}>
+        <div className="pointer-events-auto flex items-center gap-0.5 rounded-full border border-dark-border/50 bg-dark-card/70 px-2 py-1.5 shadow-xl backdrop-blur-xl">
           {navItems.map((item) => (
             <NavLink
               key={item.to}

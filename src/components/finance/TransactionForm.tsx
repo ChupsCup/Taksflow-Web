@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
-import { TRANSACTION_CATEGORIES, type Transaction } from '../../types';
+import { X, Wallet as WalletIcon } from 'lucide-react';
+import { TRANSACTION_CATEGORIES, type Transaction, type Wallet } from '../../types';
 import { cn } from '../../lib/utils';
 import { CategorySelect } from '../ui/CategorySelect';
 
@@ -9,6 +9,8 @@ interface TransactionFormProps {
   onClose: () => void;
   onSubmit: (data: Omit<Transaction, 'id' | 'user_id' | 'created_at'>) => void;
   transaction?: Transaction | null;
+  wallets?: Wallet[];
+  defaultWalletId?: string;
 }
 
 function formatWithDots(value: string): string {
@@ -29,13 +31,21 @@ const BASE_EXPENSE = TRANSACTION_CATEGORIES.filter(
 const INCOME_CATEGORIES = BASE_INCOME.filter((c) => c !== 'Lainnya');
 const EXPENSE_CATEGORIES = BASE_EXPENSE;
 
-export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: TransactionFormProps) {
+export function TransactionForm({
+  isOpen,
+  onClose,
+  onSubmit,
+  transaction,
+  wallets = [],
+  defaultWalletId,
+}: TransactionFormProps) {
   const [type, setType] = useState<'income' | 'expense'>('expense');
   const [category, setCategory] = useState('');
   const [amountDisplay, setAmountDisplay] = useState('');
   const [amountRaw, setAmountRaw] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [walletId, setWalletId] = useState('');
 
   useEffect(() => {
     if (transaction) {
@@ -46,6 +56,7 @@ export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: Tran
       setAmountDisplay(formatWithDots(raw));
       setDescription(transaction.description);
       setDate(transaction.date.split('T')[0]);
+      setWalletId(transaction.wallet_id);
     } else {
       setType('expense');
       setCategory('');
@@ -53,8 +64,9 @@ export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: Tran
       setAmountDisplay('');
       setDescription('');
       setDate(new Date().toISOString().split('T')[0]);
+      setWalletId(defaultWalletId || wallets[0]?.id || '');
     }
-  }, [transaction, isOpen]);
+  }, [transaction, isOpen, defaultWalletId, wallets]);
 
   if (!isOpen) return null;
 
@@ -63,13 +75,14 @@ export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: Tran
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!category || !amountRaw) return;
+    if (!category || !amountRaw || !walletId) return;
     onSubmit({
       type,
       category,
       amount: Number(amountRaw),
       description,
       date: new Date(date).toISOString(),
+      wallet_id: walletId,
     });
   };
 
@@ -90,7 +103,7 @@ export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: Tran
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-xl border border-dark-border bg-dark-card p-5 shadow-xl"
+        className="w-full max-w-md rounded-xl border border-dark-border/60 bg-dark-card/85 p-5 shadow-xl backdrop-blur-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
@@ -132,6 +145,29 @@ export function TransactionForm({ isOpen, onClose, onSubmit, transaction }: Tran
             >
               Pemasukan
             </button>
+          </div>
+
+          {/* Wallet */}
+          <div>
+            <label className="mb-1.5 block text-xs text-dark-muted">Dompet</label>
+            <select
+              value={walletId}
+              onChange={(e) => setWalletId(e.target.value)}
+              required
+              className="w-full rounded-lg border border-dark-border bg-dark-bg px-3 py-2 text-base sm:text-sm text-white outline-none transition-colors focus:border-primary"
+            >
+              {wallets.map((w) => (
+                <option key={w.id} value={w.id}>
+                  {w.name}
+                </option>
+              ))}
+            </select>
+            {wallets.length === 0 && (
+              <p className="mt-1.5 flex items-center gap-1 text-[10px] text-accent-orange">
+                <WalletIcon size={11} />
+                Belum ada dompet. Tambahkan dompet dulu di halaman Keuangan.
+              </p>
+            )}
           </div>
 
           {/* Category */}

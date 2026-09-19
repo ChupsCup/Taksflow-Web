@@ -25,7 +25,7 @@ function TooltipContent({ active, payload }: any) {
   if (!active || !payload || !payload[0]) return null;
   const entry = payload[0];
   return (
-    <div className="rounded-lg border border-dark-border bg-dark-card px-3 py-2 shadow-xl">
+    <div className="rounded-lg border border-dark-border/60 bg-dark-card/85 px-3 py-2 shadow-xl backdrop-blur-xl">
       <p className="text-xs text-dark-muted">{entry.payload.category}</p>
       <p className="text-sm font-medium text-white">
         {formatCurrency(entry.value)}

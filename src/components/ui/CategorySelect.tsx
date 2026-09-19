@@ -153,7 +153,7 @@ export function CategorySelect({
       {dropdownOpen && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setDropdownOpen(false)} />
-          <div className="absolute left-0 right-0 top-full z-20 mt-1 max-h-60 overflow-y-auto rounded-lg border border-dark-border bg-dark-card py-1 shadow-xl">
+          <div className="absolute left-0 right-0 top-full z-20 mt-1 max-h-60 overflow-y-auto rounded-lg border border-dark-border/60 bg-dark-card/85 py-1 shadow-xl backdrop-blur-xl">
             {visibleCategories.length === 0 ? (
               <p className="px-3 py-4 text-center text-xs text-dark-muted">
                 Semua kategori disembunyikan

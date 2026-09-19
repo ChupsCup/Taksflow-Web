@@ -7,7 +7,53 @@ export interface Transaction {
   amount: number;
   description: string;
   date: string;
+  wallet_id: string;
   created_at: string;
+}
+
+export type WalletType = 'bank' | 'ewallet' | 'cash' | 'other';
+
+export interface Wallet {
+  id: string;
+  user_id: string;
+  name: string;
+  type: WalletType;
+  color: string;
+  is_default: boolean;
+  created_at: string;
+}
+
+export interface Transfer {
+  id: string;
+  user_id: string;
+  from_wallet_id: string;
+  to_wallet_id: string;
+  amount: number;
+  date: string;
+  note: string;
+  created_at: string;
+}
+
+export const WALLET_TYPES: { value: WalletType; label: string; icon: string }[] = [
+  { value: 'bank', label: 'Bank', icon: '🏦' },
+  { value: 'ewallet', label: 'E-Wallet', icon: '📱' },
+  { value: 'cash', label: 'Cash', icon: '💵' },
+  { value: 'other', label: 'Lainnya', icon: '💰' },
+];
+
+export const WALLET_COLORS = [
+  '#7C6AF7',
+  '#3ECFA8',
+  '#F7A26A',
+  '#F76A8A',
+  '#3B82F6',
+  '#F59E0B',
+  '#10B981',
+  '#8B5CF6',
+];
+
+export function getWalletTypeLabel(type: WalletType): string {
+  return WALLET_TYPES.find((t) => t.value === type)?.label ?? type;
 }
 
 export interface BudgetLimit {

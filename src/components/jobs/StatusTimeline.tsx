@@ -7,12 +7,12 @@ import type { ApplicationStatus } from '../../types';
 const pipelineStages: ApplicationStatus[] = ['saved', 'applied', 'interview', 'offer', 'accepted', 'rejected'];
 
 const stageColors: Record<ApplicationStatus, string> = {
-  saved: 'border-l-dark-muted bg-dark-hover',
-  applied: 'border-l-primary bg-primary/5',
-  interview: 'border-l-accent-orange bg-accent-orange/5',
-  offer: 'border-l-secondary bg-secondary/5',
-  accepted: 'border-l-secondary bg-secondary/5',
-  rejected: 'border-l-accent-pink bg-accent-pink/5',
+  saved: 'border-l-dark-muted',
+  applied: 'border-l-primary',
+  interview: 'border-l-accent-orange',
+  offer: 'border-l-secondary',
+  accepted: 'border-l-secondary',
+  rejected: 'border-l-accent-pink',
 };
 
 const dotColors: Record<ApplicationStatus, string> = {
@@ -57,7 +57,7 @@ export function StatusTimeline() {
         return (
           <div key={status} className="flex items-start gap-1.5">
             {/* Stage card */}
-            <div className={`min-w-[100px] flex-1 rounded-lg border border-dark-border p-2 border-l-4 ${stageColors[status]}`}>
+            <div className={`min-w-[100px] flex-1 rounded-lg border border-dark-border/60 bg-dark-card/60 p-2 border-l-4 backdrop-blur-xl ${stageColors[status]}`}>
               <div className="flex items-center gap-1.5">
                 <span className={`h-2 w-2 shrink-0 rounded-full ${dotColors[status]}`} />
                 <span className="truncate text-[11px] font-medium text-white">

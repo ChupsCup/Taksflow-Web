@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { format, parseISO, isAfter, startOfMonth, endOfMonth } from 'date-fns';
 import { id } from 'date-fns/locale';
+import type { Transaction, Transfer, Wallet } from '../types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -95,4 +96,28 @@ export function daysUntil(dateStr: string | null): number {
   } catch {
     return Infinity;
   }
+}
+
+export function computeWalletBalances(
+  transactions: Transaction[] | undefined,
+  transfers: Transfer[] | undefined,
+  wallets: Wallet[] | undefined
+): Record<string, number> {
+  const balances: Record<string, number> = {};
+  for (const wallet of wallets ?? []) {
+    balances[wallet.id] = 0;
+  }
+
+  for (const tx of transactions ?? []) {
+    if (tx.wallet_id && balances[tx.wallet_id] !== undefined) {
+      balances[tx.wallet_id] += tx.type === 'income' ? tx.amount : -tx.amount;
+    }
+  }
+
+  for (const tr of transfers ?? []) {
+    if (balances[tr.from_wallet_id] !== undefined) balances[tr.from_wallet_id] -= tr.amount;
+    if (balances[tr.to_wallet_id] !== undefined) balances[tr.to_wallet_id] += tr.amount;
+  }
+
+  return balances;
 }

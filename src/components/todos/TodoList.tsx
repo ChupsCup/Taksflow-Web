@@ -174,7 +174,7 @@ export function TodoList({
           </button>
 
           {manageOpen && (
-            <div className="absolute left-0 top-full z-30 mt-1 w-56 rounded-lg border border-dark-border bg-dark-card p-3 shadow-xl">
+            <div className="absolute left-0 top-full z-30 mt-1 w-56 rounded-lg border border-dark-border/60 bg-dark-card/85 p-3 shadow-xl backdrop-blur-xl">
               <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-dark-muted">
                 Kelola Kategori
               </p>

@@ -27,7 +27,7 @@ export function AppLayout() {
       style={
         wallpaper
           ? {
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${wallpaper})`,
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${wallpaper})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundAttachment: 'fixed',
@@ -37,7 +37,7 @@ export function AppLayout() {
     >
       <Sidebar />
       <main className="min-w-0 flex-1 lg:pb-16">
-        <div className="mx-auto w-full max-w-6xl px-4 py-6 pb-24 lg:pb-6">
+        <div className="mx-auto w-full max-w-[1600px] px-4 py-6 pb-24 lg:pb-6">
           <Outlet />
         </div>
       </main>

@@ -1,5 +1,6 @@
 import { Plus, Pencil, Trash2 } from 'lucide-react';
-import type { Transaction } from '../../types';
+import type { Transaction, Wallet } from '../../types';
+import { getWalletTypeLabel } from '../../types';
 
 import { formatCurrency, formatDate, cn } from '../../lib/utils';
 import { Badge } from '../ui/Badge';
@@ -16,6 +17,7 @@ interface TransactionTableProps {
   onAdd: () => void;
   onEdit: (transaction: Transaction) => void;
   onDelete: (id: string) => void;
+  wallets?: Wallet[];
 }
 
 const MONTHS = [
@@ -38,8 +40,14 @@ export function TransactionTable({
   onAdd,
   onEdit,
   onDelete,
+  wallets = [],
 }: TransactionTableProps) {
   const hasTransactions = transactions && transactions.length > 0;
+
+  const walletInfo = (id: string): { name: string; color: string } => {
+    const wallet = wallets.find((w) => w.id === id);
+    return wallet ? { name: wallet.name, color: wallet.color } : { name: '?', color: '#6b6b80' };
+  };
 
   return (
     <div>
@@ -89,13 +97,16 @@ export function TransactionTable({
           action={{ label: 'Tambah Transaksi', onClick: onAdd }}
         />
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-dark-border">
+        <div className="overflow-x-auto rounded-xl border border-dark-border/60 bg-dark-card/60 backdrop-blur-xl">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-dark-border bg-dark-hover text-dark-muted">
+              <tr className="border-b border-dark-border bg-dark-hover/60 text-dark-muted">
                 <th className="px-1.5 py-1.5 text-[10px] font-medium sm:px-3 sm:py-2 sm:text-xs">Tanggal</th>
                 <th className="hidden px-1.5 py-1.5 text-[10px] font-medium sm:table-cell sm:px-3 sm:py-2 sm:text-xs">Deskripsi</th>
                 <th className="px-1.5 py-1.5 text-[10px] font-medium sm:px-3 sm:py-2 sm:text-xs">Kategori</th>
+                {wallets.length > 0 && (
+                  <th className="hidden px-1.5 py-1.5 text-[10px] font-medium sm:table-cell sm:px-3 sm:py-2 sm:text-xs">Dompet</th>
+                )}
                 <th className="px-1.5 py-1.5 text-right text-[10px] font-medium sm:px-3 sm:py-2 sm:text-xs">Jumlah</th>
                 <th className="px-1.5 py-1.5 text-center text-[10px] font-medium sm:px-3 sm:py-2 sm:text-xs">Aksi</th>
               </tr>
@@ -115,6 +126,24 @@ export function TransactionTable({
                       {tx.category}
                     </Badge>
                   </td>
+                  {wallets.length > 0 && (
+                    <td className="hidden px-1.5 py-1.5 sm:table-cell sm:px-3 sm:py-2">
+                      <span
+                        className="inline-flex max-w-[130px] items-center gap-1.5 truncate rounded-full px-2.5 py-0.5 text-[10px] font-medium"
+                        title={getWalletTypeLabel(wallets.find((w) => w.id === tx.wallet_id)?.type ?? 'other')}
+                        style={{
+                          backgroundColor: `${walletInfo(tx.wallet_id).color}1a`,
+                          color: walletInfo(tx.wallet_id).color,
+                        }}
+                      >
+                        <span
+                          className="h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={{ backgroundColor: walletInfo(tx.wallet_id).color }}
+                        />
+                        <span className="truncate">{walletInfo(tx.wallet_id).name}</span>
+                      </span>
+                    </td>
+                  )}
                   <td
                     className={cn(
                       'whitespace-nowrap px-1.5 py-1.5 text-right text-[10px] font-medium sm:px-3 sm:py-2 sm:text-xs',

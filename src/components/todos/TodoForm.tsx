@@ -94,7 +94,7 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
       <div className="hidden sm:block">
         <div className="fixed inset-0 z-50 bg-black/60" onClick={onClose} />
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-          <div className="pointer-events-auto w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-xl border border-dark-border bg-dark-card p-6">
+          <div className="pointer-events-auto w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-xl border border-dark-border/60 bg-dark-card/85 p-6 backdrop-blur-2xl">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-white">
                 {initialData ? 'Edit Tugas' : 'Tugas Baru'}
@@ -158,7 +158,7 @@ export function TodoForm({ isOpen, onClose, onSubmit, initialData, isSubmitting 
       <div className="block sm:hidden">
         <div className="fixed inset-0 z-50 bg-black/60 touch-none" onClick={onClose} />
         <div className="fixed inset-0 z-50 flex items-start justify-center pt-12 sm:pt-0 p-3 pointer-events-none">
-          <div className="pointer-events-auto w-full max-w-xs rounded-xl border border-dark-border bg-dark-card">
+          <div className="pointer-events-auto w-full max-w-xs rounded-xl border border-dark-border/60 bg-dark-card/85 backdrop-blur-2xl">
             <div className="max-h-[80vh] overflow-y-auto overscroll-contain p-3">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-semibold text-white">{initialData ? 'Edit Tugas' : 'Tugas Baru'}</span>

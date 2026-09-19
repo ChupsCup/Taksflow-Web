@@ -55,7 +55,7 @@ export function BudgetForm({ isOpen, onClose, onSubmit, existingCategory }: Budg
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-xl border border-dark-border bg-dark-card p-6 shadow-xl"
+        className="w-full max-w-md rounded-xl border border-dark-border/60 bg-dark-card/85 p-6 shadow-xl backdrop-blur-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">

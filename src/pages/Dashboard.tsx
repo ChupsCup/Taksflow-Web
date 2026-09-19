@@ -1,23 +1,39 @@
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Wallet, Briefcase, CheckSquare, TrendingUp, TrendingDown, Calendar } from 'lucide-react';
 import { Card } from '../components/ui/Card';
 import { StatCard } from '../components/ui/StatCard';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { useTransactions } from '../hooks/useTransactions';
+import { useWallets } from '../hooks/useWallets';
+import { useTransfers } from '../hooks/useTransfers';
 import { useJobsStats } from '../hooks/useJobApplications';
 import { useTodosStats } from '../hooks/useTodos';
-import { formatCurrency, getMonthRange } from '../lib/utils';
+import { formatCurrency, getMonthRange, computeWalletBalances } from '../lib/utils';
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const { start, end } = getMonthRange();
   const { data: transactions, isLoading: txLoading } = useTransactions(start, end);
+  const { data: allTransactions } = useTransactions();
+  const { data: wallets = [], isLoading: walletsLoading } = useWallets();
+  const { data: transfers = [] } = useTransfers();
   const { data: jobsStats, isLoading: jobsLoading } = useJobsStats();
   const { data: todoStats, isLoading: todoLoading } = useTodosStats();
 
   const income = transactions?.filter((t) => t.type === 'income').reduce((a, b) => a + b.amount, 0) ?? 0;
   const expense = transactions?.filter((t) => t.type === 'expense').reduce((a, b) => a + b.amount, 0) ?? 0;
-  const balance = income - expense;
 
-  const isLoading = txLoading || jobsLoading || todoLoading;
+  const walletBalances = useMemo(
+    () => computeWalletBalances(allTransactions, transfers, wallets),
+    [allTransactions, transfers, wallets]
+  );
+  const totalBalance = useMemo(
+    () => wallets.reduce((sum, w) => sum + (walletBalances[w.id] || 0), 0),
+    [wallets, walletBalances]
+  );
+
+  const isLoading = txLoading || jobsLoading || todoLoading || walletsLoading;
 
   if (isLoading) {
     return (
@@ -36,7 +52,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2">
         <StatCard
           title="Pemasukan Bulan Ini"
           value={formatCurrency(income)}
@@ -49,14 +65,60 @@ export default function Dashboard() {
           icon={TrendingDown}
           iconColor="#F76A8A"
         />
-        <StatCard
-          title="Saldo"
-          value={formatCurrency(balance)}
-          icon={Wallet}
-          iconColor="#7C6AF7"
-          className="sm:col-span-2 lg:col-span-1"
-        />
       </div>
+
+      {/* Wallet Summary */}
+      <Card className="p-4">
+        <div className="mb-4 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <div className="rounded-lg bg-primary/10 p-2 text-primary">
+              <Wallet size={20} />
+            </div>
+            <h2 className="font-semibold text-white">Saldo Dompet</h2>
+          </div>
+          <button
+            onClick={() => navigate('/finance')}
+            className="rounded-lg border border-dark-border bg-dark-bg px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-dark-hover"
+          >
+            Kelola di Keuangan
+          </button>
+        </div>
+
+        <div className="mb-4 flex items-end justify-between">
+          <p className="text-xs text-dark-muted">Total Saldo</p>
+          <p className="text-2xl font-bold text-white">{formatCurrency(totalBalance)}</p>
+        </div>
+
+        {wallets.length > 0 ? (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {wallets.map((wallet) => (
+              <button
+                key={wallet.id}
+                onClick={() => navigate('/finance')}
+                className="rounded-lg p-3 text-left transition-all hover:brightness-110"
+                style={{ backgroundColor: `${wallet.color}1a` }}
+              >
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className="h-2 w-2 shrink-0 rounded-full"
+                    style={{ backgroundColor: wallet.color }}
+                  />
+                  <p className="truncate text-xs" style={{ color: wallet.color }}>
+                    {wallet.name}
+                  </p>
+                </div>
+                <p className="mt-1 text-sm font-semibold text-white">
+                  {formatCurrency(walletBalances[wallet.id] || 0)}
+                </p>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <p className="py-4 text-center text-sm text-dark-muted">
+            Belum ada dompet. Bikin di halaman Keuangan dulu.
+          </p>
+        )}
+      </Card>
 
       {/* Module Summaries */}
       <div className="grid gap-4 md:grid-cols-2">

@@ -65,10 +65,10 @@ export function ApplicationTable({ onEdit }: ApplicationTableProps) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-dark-border">
+    <div className="overflow-x-auto rounded-xl border border-dark-border/60 bg-dark-card/60 backdrop-blur-xl">
       <table className="w-full text-left text-sm">
         <thead>
-          <tr className="border-b border-dark-border bg-dark-hover">
+          <tr className="border-b border-dark-border bg-dark-hover/60">
             <th className="px-1.5 py-1.5 text-[10px] font-medium text-dark-muted sm:px-3 sm:py-2 sm:text-xs">Company</th>
             <th className="px-1.5 py-1.5 text-[10px] font-medium text-dark-muted sm:px-3 sm:py-2 sm:text-xs">Posisi</th>
             <th className="px-1.5 py-1.5 text-[10px] font-medium text-dark-muted sm:px-3 sm:py-2 sm:text-xs">Status</th>
@@ -79,7 +79,7 @@ export function ApplicationTable({ onEdit }: ApplicationTableProps) {
         </thead>
         <tbody className="divide-y divide-dark-border">
           {applications.map((app) => (
-            <tr key={app.id} className="bg-dark-card transition-colors hover:bg-dark-hover">
+            <tr key={app.id} className="transition-colors hover:bg-dark-hover/60">
               <td className="px-1.5 py-1.5 sm:px-3 sm:py-2">
                 <p className="max-w-[80px] truncate text-[10px] font-medium text-white sm:max-w-none sm:text-xs sm:overflow-visible sm:whitespace-normal">{app.company}</p>
               </td>

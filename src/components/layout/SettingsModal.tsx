@@ -34,7 +34,7 @@ export function SettingsModal({ open, onClose }: Props) {
     <>
       <div className="fixed inset-0 z-40 bg-black/50" onClick={onClose} />
       <div className="fixed inset-x-4 bottom-[50%] z-50 translate-y-1/2">
-        <div className="mx-auto max-w-sm overflow-hidden rounded-2xl border border-dark-border bg-dark-card shadow-xl">
+        <div className="mx-auto max-w-sm overflow-hidden rounded-2xl border border-dark-border/60 bg-dark-card/85 shadow-xl backdrop-blur-2xl">
           <div className="flex items-center justify-between px-5 pt-4 pb-2">
             <h2 className="text-base font-semibold text-white">Pengaturan</h2>
             <button onClick={onClose} className="rounded-lg p-1 text-dark-muted hover:text-white">
