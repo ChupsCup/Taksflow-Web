@@ -24,12 +24,18 @@ export function AppLayout() {
   return (
     <div className={cn('flex min-h-screen min-h-[100dvh] flex-col bg-dark-bg')}>
       {wallpaper && (
-        <div
-          className="fixed-wallpaper pointer-events-none"
-          style={{
-            backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${wallpaper})`,
-          }}
-        />
+        <div className="wallpaper-layer" aria-hidden="true">
+          <img
+            src={wallpaper}
+            alt=""
+            className="h-full w-full object-cover"
+            draggable={false}
+          />
+          <div
+            className="absolute inset-0"
+            style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}
+          />
+        </div>
       )}
       <Sidebar />
       <main className="relative z-10 min-w-0 flex-1 lg:pb-16">

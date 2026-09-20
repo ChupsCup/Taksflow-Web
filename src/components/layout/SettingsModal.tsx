@@ -101,7 +101,7 @@ export function SettingsModal({ open, onClose }: Props) {
             onChange={handleWallpaper}
           />
           <p className="px-2 pb-2 pt-1 text-center text-[11px] text-dark-muted">
-            TaskFlow v1.3.0
+            TaskFlow v1.4.0
           </p>
         </div>
       </div>
