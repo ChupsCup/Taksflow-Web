@@ -25,12 +25,9 @@ export function AppLayout() {
     <div className={cn('flex min-h-screen min-h-[100dvh] flex-col bg-dark-bg')}>
       {wallpaper && (
         <div
-          className="fixed-wallpaper pointer-events-none fixed left-0 top-0 z-0 w-full"
+          className="fixed-wallpaper pointer-events-none"
           style={{
             backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${wallpaper})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
           }}
         />
       )}

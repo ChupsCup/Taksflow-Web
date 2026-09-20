@@ -63,8 +63,12 @@ body {
 }
 
 .fixed-wallpaper {
-  height: 100vh;
-  height: 130vh;
+  position: fixed;
+  inset: -64px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
 }
 
 img,
