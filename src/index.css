@@ -65,11 +65,11 @@ body {
 .fixed-wallpaper {
   position: fixed;
   top: -80px;
-  left: -80px;
-  right: -80px;
+  left: 0;
+  right: 0;
   bottom: auto;
   height: 100vh;
-  height: calc(100svh + 200px);
+  height: calc(100dvh + 80px);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
