@@ -1,3 +1,4 @@
+import { useLayoutEffect, useState } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
@@ -8,6 +9,39 @@ import { cn } from '../../lib/utils';
 export function AppLayout() {
   const { user, loading } = useAuth();
   const { wallpaper } = useTheme();
+  const [wallpaperSize, setWallpaperSize] = useState<{
+    w: number;
+    h: number;
+  } | null>(null);
+
+  useLayoutEffect(() => {
+    if (!wallpaper) {
+      setWallpaperSize(null);
+      return;
+    }
+
+    let lastWidth = window.innerWidth;
+
+    const applyFont = () => {
+      const w = window.innerWidth;
+      setWallpaperSize({ w, h: window.innerHeight + 64 });
+      lastWidth = w;
+    };
+
+    applyFont();
+
+    const onResize = () => {
+      const w = window.innerWidth;
+      if (Math.abs(w - lastWidth) > 5) applyFont();
+    };
+
+    window.addEventListener('resize', onResize);
+    window.addEventListener('orientationchange', applyFont);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('orientationchange', applyFont);
+    };
+  }, [wallpaper]);
 
   if (loading) {
     return (
@@ -23,8 +57,12 @@ export function AppLayout() {
 
   return (
     <div className={cn('flex min-h-screen min-h-[100dvh] flex-col bg-dark-bg')}>
-      {wallpaper && (
-        <div className="wallpaper-layer" aria-hidden="true">
+      {wallpaper && wallpaperSize && (
+        <div
+          className="pointer-events-none fixed left-0 top-0 z-0 overflow-hidden"
+          style={{ width: wallpaperSize.w, height: wallpaperSize.h }}
+          aria-hidden="true"
+        >
           <img
             src={wallpaper}
             alt=""

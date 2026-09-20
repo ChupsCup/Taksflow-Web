@@ -62,18 +62,6 @@ body {
   width: 100%;
 }
 
-.wallpaper-layer {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: max(100vw, 1600px);
-  height: max(100vh, 1600px);
-  overflow: hidden;
-  z-index: 0;
-  pointer-events: none;
-}
-
 img,
 svg,
 video,
